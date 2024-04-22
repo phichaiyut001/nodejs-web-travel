@@ -1,0 +1,158 @@
+// eslint-disable-next-line no-unused-vars
+import { useState } from "react";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import axios from "axios";
+import { useLocation } from "react-router-dom";
+import moment from "moment";
+
+const Write = () => {
+  const state = useLocation().state;
+  const [value, setValue] = useState(state?.title || "");
+  const [title, setTitle] = useState(state?.description || "");
+  const [file, setFile] = useState(null);
+  const [cat, setCat] = useState(state?.cat || "");
+
+  // const navigate = useNavigate()
+
+  const upload = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await axios.post("/api/upload", formData);
+      return res.data;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleClick = async (e) => {
+    e.preventDefault();
+    const imgUrl = await upload();
+
+    try {
+      state
+        ? await axios.put(`/api/posts/${state.id}`, {
+            title,
+            description: value,
+            cat,
+            img: imgUrl || "",
+          })
+        : await axios.post(`/api/posts/`, {
+            title,
+            description: value,
+            cat,
+            img: imgUrl || "",
+            date: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
+          });
+      //   navigate("/")
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  return (
+    <>
+      <div className="container mx-auto px-20 justify-center items-center">
+        <div className="write mt-10 ">
+          <div className="content">
+            <input
+              value={title}
+              type="text"
+              placeholder="Title"
+              onChange={(e) => setTitle(e.target.value)}
+            />
+            <div className="editContainer">
+              <ReactQuill
+                className="editor"
+                theme="snow"
+                value={value}
+                onChange={setValue}
+              />
+            </div>
+          </div>
+          <div className="menu">
+            <div className="item">
+              <h1 className=" text-3xl font-bold">Publish</h1>
+              <span>
+                <b>Status: </b> Draft
+              </span>
+              <span>
+                <b>Visibility: </b> Public
+              </span>
+              <input
+                style={{ display: "none" }}
+                type="file"
+                name=""
+                id="file"
+                onChange={(e) => setFile(e.target.files[0])}
+              />
+              <label className="file" htmlFor="file">
+                Upload Image
+              </label>
+              <div className="buttons mt-2">
+                <button className="btn btn-outline">Save as a Draft</button>
+                <button className="btn btn-outline" onClick={handleClick}>
+                  Publish
+                </button>
+              </div>
+            </div>
+            <div className="item">
+              <h1 className="text-3xl font-bold">Category</h1>
+              <div className="cat">
+                <input
+                  type="radio"
+                  checked={cat === "food"}
+                  className="radio radio-info"
+                  name="cat"
+                  value="food"
+                  id="food"
+                  onChange={(e) => setCat(e.target.value)}
+                />
+                <label htmlFor="food">เที่ยวตะลอนกิน</label>
+              </div>
+              <div className="cat">
+                <input
+                  type="radio"
+                  checked={cat === "temple"}
+                  className="radio radio-info"
+                  name="cat"
+                  value="temple"
+                  id="temple"
+                  onChange={(e) => setCat(e.target.value)}
+                />
+                <label htmlFor="temple">เที่ยววัด</label>
+              </div>
+              <div className="cat">
+                <input
+                  type="radio"
+                  checked={cat === "sea"}
+                  className="radio radio-info"
+                  name="cat"
+                  value="sea"
+                  id="sea"
+                  onChange={(e) => setCat(e.target.value)}
+                />
+                <label htmlFor="sea">เที่ยวทะเล</label>
+              </div>
+              <div className="cat">
+                <input
+                  type="radio"
+                  checked={cat === "mount"}
+                  className="radio radio-info"
+                  name="cat"
+                  value="mount"
+                  id="mount"
+                  onChange={(e) => setCat(e.target.value)}
+                />
+                <label htmlFor="mount">เที่ยวภูเขา</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default Write;
