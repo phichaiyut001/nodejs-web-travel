@@ -77,27 +77,28 @@ const Write = () => {
 
   return (
     <>
-      <div className="container mx-auto px-20 justify-center items-center">
-        <div className="write mt-10 ">
-          <div className="content">
+      <div className="container mx-auto px-4 lg:px-20 flex justify-center items-center">
+        <div className="write mt-10 w-full lg:w-3/4 flex flex-wrap justify-between">
+          <div className="content w-full lg:w-2/3 pr-6 mb-10">
             <input
               value={title}
               type="text"
               placeholder="Title"
               onChange={(e) => setTitle(e.target.value)}
+              className="border border-gray-300 rounded-md px-4 py-2 w-full mb-4"
             />
-            <div className="editContainer">
+            <div className="editContainer max-h-96  border border-gray-300 rounded-md p-2">
               <ReactQuill
-                className="editor"
+                className="editor h-64 mb-10"
                 theme="snow"
                 value={value}
                 onChange={setValue}
               />
             </div>
           </div>
-          <div className="menu">
-            <div className="item">
-              <h1 className=" text-3xl font-bold">Publish</h1>
+          <div className="menu w-full lg:w-1/3 pl-6">
+            <div className="item border border-gray-300 rounded-md p-4 mb-4">
+              <h1 className="text-3xl font-bold mb-2">Publish</h1>
               <span>
                 <b>Status: </b> Draft
               </span>
@@ -111,26 +112,31 @@ const Write = () => {
                 id="file"
                 onChange={handleFileChange}
               />
-              <label className="file" htmlFor="file">
+              <label
+                htmlFor="file"
+                className="block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2 cursor-pointer"
+              >
                 Upload Image
               </label>
               {previewURL && (
                 <img
                   src={previewURL}
                   alt="Uploaded"
-                  style={{ width: "100px", height: "100px" }}
+                  className="mt-2 w-24 h-24 object-cover rounded"
                 />
               )}
 
-              <div className="buttons mt-2">
-                <button className="btn btn-outline">Save as a Draft</button>
+              <div className="buttons mt-4">
+                <button className="btn btn-outline mr-4">
+                  Save as a Draft
+                </button>
                 <button className="btn btn-outline" onClick={handleClick}>
                   Publish
                 </button>
               </div>
             </div>
-            <div className="item">
-              <h1 className="text-3xl font-bold">Category</h1>
+            <div className="item border border-gray-300 rounded-md p-4">
+              <h1 className="text-3xl font-bold mb-2">Category</h1>
               <div className="cat">
                 <input
                   type="radio"
@@ -183,6 +189,16 @@ const Write = () => {
           </div>
         </div>
       </div>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
     </>
   );
 };

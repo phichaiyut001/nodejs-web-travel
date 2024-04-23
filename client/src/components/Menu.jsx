@@ -47,19 +47,25 @@ const Menu = ({ cat }) => {
 
   return (
     <>
-      <div className="menu">
-        <h1>โพสต์ อื่นๆที่ที่เกี่ยวข้อง</h1>
-        {posts &&
-          posts.map((post) => (
-            <div className="post" key={post.id}>
-              <img src={`../upload/${post.img}`} alt="" />
-              <h2 className=" text-2xl font-bold ">{post.title}</h2>
-              <Link to={`/post/${post.id}`}>
-                <button className="btn btn-outline">Read More</button>
-              </Link>
-            </div>
-          ))}
-      </div>
+      <>
+        <div className="menu flex flex-wrap">
+          <h1 className="w-full mb-4 text-2xl">โพสต์ อื่นๆที่ที่เกี่ยวข้อง</h1>
+          {posts &&
+            posts.map((post) => (
+              <div className="post w-full p-4 max-w-xs" key={post.id}>
+                <img
+                  src={`../upload/${post.img}`}
+                  alt=""
+                  className="w-full h-48 object-cover object-center mb-2 rounded-lg"
+                />
+                <h2 className="text-xl font-bold mb-2">{post.title}</h2>
+                <Link to={`/post/${post.id}`}>
+                  <button className="btn btn-outline">Read More</button>
+                </Link>
+              </div>
+            ))}
+        </div>
+      </>
     </>
   );
 };

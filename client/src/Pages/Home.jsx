@@ -31,35 +31,47 @@ const Home = () => {
 
   return (
     <>
-      <div className="container mx-auto px-20 justify-center items-center">
-        <div className="Home">
-          <div className="posts ">
-            {posts &&
-              posts.map((post) => (
-                <div className="post flex" key={post.id}>
-                  <div className="img">
-                    <img src={`../upload/${post.img}`} alt="" />
-                  </div>
-                  <div className="content">
-                    <Link className="link ">
-                      <h1 className="text-5xl font-bold ">{post.title}</h1>
-                    </Link>
-                    <div className="mt-2">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-7 mb-3 ">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {posts &&
+            posts.map((post) => (
+              <div className="post flex flex-col" key={post.id}>
+                <div className="img">
+                  <img
+                    src={`../upload/${post.img}`}
+                    alt=""
+                    className="w-full h-72 rounded-lg"
+                  />
+                </div>
+                <div className="content mt-4">
+                  <Link
+                    to={`post/${post.id}`}
+                    className="text-2xl font-bold text-blue-700 hover:underline"
+                  >
+                    {post.title}
+                  </Link>
+                  <div className="mt-2">
+                    <p
+                      className="text-gray-700  "
+                      style={{ textAlign: "justify" }}
+                    >
                       <TextTruncate
                         line={5}
-                        element="p"
+                        element="span"
                         truncateText="…"
                         text={getText(post.description)}
                       />
-                    </div>
-                    <p className="desc mt-3"></p>
-                    <Link to={`post/${post.id}`}>
-                      <button className="btn btn-primary mt-3">Readmore</button>
-                    </Link>
+                    </p>
                   </div>
+                  <Link
+                    to={`post/${post.id}`}
+                    className="mt-3 inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  >
+                    Read More
+                  </Link>
                 </div>
-              ))}
-          </div>
+              </div>
+            ))}
         </div>
       </div>
     </>

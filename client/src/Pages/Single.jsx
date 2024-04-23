@@ -53,38 +53,51 @@ const Single = () => {
     return doc.body.textContent;
   };
   return (
-    <div className="container mx-auto px-20 justify-center items-center">
-      <div className="single mt-10">
-        <div className="content">
-          <img src={`../upload/${post.img}`} alt="" />
-          <div className="user">
-            {post.userImg && <img src={post.userImg} alt="" />}
-            <div className="info">
-              <span>{post.username}</span>
-              <p>Posted {moment(post.date).fromNow()}</p>
-            </div>
-            {currentUser && currentUser.username === post.username && (
-              <>
-                <div className="edit">
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 mb-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-10">
+        <div className="single">
+          <div className="content">
+            <img
+              src={`../upload/${post.img}`}
+              alt=""
+              className="w-full h-auto object-cover rounded"
+            />
+            <div className="user flex items-center mt-4 ">
+              {post.userImg && (
+                <img
+                  src={post.userImg}
+                  alt=""
+                  className="w-10 h-10 rounded-full mr-2"
+                />
+              )}
+              <div className="info">
+                <span>{post.username}</span>
+                <p>Posted {moment(post.date).fromNow()}</p>
+              </div>
+              {currentUser && currentUser.username === post.username && (
+                <div className="ml-auto flex space-x-2">
                   <Link to={`/write?edit=2`} state={post}>
-                    <PencilSquareIcon className="pen h-6 w-6 text-blue-500" />
+                    <PencilSquareIcon className="h-6 w-6 text-blue-500" />
                   </Link>
+                  <TrashIcon
+                    onClick={handleDelete}
+                    className="h-6 w-6 text-red-500 cursor-pointer"
+                  />
                 </div>
-                <div className="delete">
-                  <Link>
-                    <TrashIcon
-                      onClick={handleDelete}
-                      className="h-6 w-6 text-red-500"
-                    />
-                  </Link>
-                </div>
-              </>
-            )}
+              )}
+            </div>
+            <h1 className="text-5xl font-bold mt-2 mb-3">{post.title}</h1>
+            <p
+              className="desc mt-3 md:mt-0 md:col-start-1 md:col-end-3 text-left md:text-left whitespace-pre-line pl-0 md:pl-0"
+              style={{ textAlign: "justify" }}
+            >
+              {getText(post.description)}
+            </p>
           </div>
-          <h1 className="text-5xl font-bold mt-2 mb-3">{post.title}</h1>
-          <p className="desc mt-3">{getText(post.description)}</p>
         </div>
-        <Menu cat={post.cat} />
+        <div className="hidden md:block md:col-start-2 md:col-end-3 flex justify-end">
+          <Menu cat={post.cat} />
+        </div>
       </div>
     </div>
   );
