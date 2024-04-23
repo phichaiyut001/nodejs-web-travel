@@ -5,6 +5,7 @@ import "react-quill/dist/quill.snow.css";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import moment from "moment";
+import Swal from "sweetalert2";
 
 const Write = () => {
   const state = useLocation().state;
@@ -12,8 +13,15 @@ const Write = () => {
   const [title, setTitle] = useState(state?.description || "");
   const [file, setFile] = useState(null);
   const [cat, setCat] = useState(state?.cat || "");
+  const [previewURL, setPreviewURL] = useState("");
 
   // const navigate = useNavigate()
+
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    setFile(selectedFile);
+    setPreviewURL(URL.createObjectURL(selectedFile));
+  };
 
   const upload = async () => {
     try {
@@ -45,8 +53,24 @@ const Write = () => {
             img: imgUrl || "",
             date: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
           });
-      //   navigate("/")
+
+      // แสดง SweetAlert เมื่อบันทึกข้อมูลสำเร็จ
+      await Swal.fire({
+        icon: "success",
+        title: "บันทึกสำเร็จ!",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
+      // ตรวจสอบเมื่อสำเร็จ แล้วทำอย่างไรต่อ
+      // navigate("/")
     } catch (err) {
+      // แสดง SweetAlert เมื่อเกิดข้อผิดพลาด
+      await Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "เนื้อหามีความยาวมากเกินไป",
+      });
       console.log(err);
     }
   };
@@ -85,11 +109,19 @@ const Write = () => {
                 type="file"
                 name=""
                 id="file"
-                onChange={(e) => setFile(e.target.files[0])}
+                onChange={handleFileChange}
               />
               <label className="file" htmlFor="file">
                 Upload Image
               </label>
+              {previewURL && (
+                <img
+                  src={previewURL}
+                  alt="Uploaded"
+                  style={{ width: "100px", height: "100px" }}
+                />
+              )}
+
               <div className="buttons mt-2">
                 <button className="btn btn-outline">Save as a Draft</button>
                 <button className="btn btn-outline" onClick={handleClick}>

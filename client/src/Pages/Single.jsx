@@ -5,6 +5,7 @@ import Menu from "../components/Menu";
 import axios from "axios";
 import moment from "moment";
 import { AuthContext } from "../context/authContext";
+import Swal from "sweetalert2";
 
 const Single = () => {
   const [post, setPost] = useState({});
@@ -26,8 +27,21 @@ const Single = () => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`/api/posts/${id}`);
-      navigate("/");
+      const result = await Swal.fire({
+        title: "ต้องการลบ โพสต์นี้หรือไม่?",
+        text: "",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      });
+
+      if (result.isConfirmed) {
+        await axios.delete(`/api/posts/${id}`);
+        navigate("/");
+        Swal.fire("Deleted!", "Your post has been deleted.", "success");
+      }
     } catch (err) {
       console.log(err);
     }
@@ -49,7 +63,7 @@ const Single = () => {
               <span>{post.username}</span>
               <p>Posted {moment(post.date).fromNow()}</p>
             </div>
-            {currentUser.username === post.username && (
+            {currentUser && currentUser.username === post.username && (
               <>
                 <div className="edit">
                   <Link to={`/write?edit=2`} state={post}>
