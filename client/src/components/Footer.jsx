@@ -4,7 +4,7 @@ import React from "react";
 const Footer = () => {
   return (
     <>
-      <footer className="footer p-10 bg-neutral text-neutral-content relative bottom-0 w-full">
+      <footer className="footer p-10 bg-neutral text-neutral-content">
         <aside>
           <svg
             width="50"

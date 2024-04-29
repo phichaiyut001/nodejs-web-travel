@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import axios from "axios";
@@ -9,18 +9,22 @@ import Swal from "sweetalert2";
 
 const Write = () => {
   const state = useLocation().state;
-  const [value, setValue] = useState(state?.title || "");
-  const [title, setTitle] = useState(state?.description || "");
+  const [value, setValue] = useState(state?.description || "");
+  const [title, setTitle] = useState(state?.title || "");
   const [file, setFile] = useState(null);
   const [cat, setCat] = useState(state?.cat || "");
   const [previewURL, setPreviewURL] = useState("");
-
-  // const navigate = useNavigate()
+  const [addImg, setAddImg] = useState("");
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     setFile(selectedFile);
     setPreviewURL(URL.createObjectURL(selectedFile));
+  };
+
+  const handleAddImgToBlog = (e) => {
+    const selectedImg = e.target.files[0];
+    setAddImg(URL.createObjectURL(selectedImg));
   };
 
   const upload = async () => {
@@ -54,18 +58,13 @@ const Write = () => {
             date: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
           });
 
-      // แสดง SweetAlert เมื่อบันทึกข้อมูลสำเร็จ
       await Swal.fire({
         icon: "success",
         title: "บันทึกสำเร็จ!",
         showConfirmButton: false,
         timer: 1500,
       });
-
-      // ตรวจสอบเมื่อสำเร็จ แล้วทำอย่างไรต่อ
-      // navigate("/")
     } catch (err) {
-      // แสดง SweetAlert เมื่อเกิดข้อผิดพลาด
       await Swal.fire({
         icon: "error",
         title: "เกิดข้อผิดพลาด!",
@@ -75,6 +74,14 @@ const Write = () => {
     }
   };
 
+  useEffect(() => {
+    if (addImg) {
+      const quill = document.getElementsByClassName("ql-editor")[0];
+      const img = `<img src="${addImg}" alt="Uploaded Image"/>`;
+      quill.innerHTML += img;
+    }
+  }, [addImg]);
+  console.log(value);
   return (
     <>
       <div className="container mx-auto px-4 lg:px-20 flex justify-center items-center">
@@ -87,9 +94,9 @@ const Write = () => {
               onChange={(e) => setTitle(e.target.value)}
               className="border border-gray-300 rounded-md px-4 py-2 w-full mb-4"
             />
-            <div className="editContainer max-h-96  border border-gray-300 rounded-md p-2">
+            <div className="editContainer max-h-96 border border-gray-300 rounded-md p-2">
               <ReactQuill
-                className="editor h-64 mb-10"
+                className="editor h-auto mb-10 overflow-auto  "
                 theme="snow"
                 value={value}
                 onChange={setValue}
@@ -116,7 +123,7 @@ const Write = () => {
                 htmlFor="file"
                 className="block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2 cursor-pointer"
               >
-                Upload Image
+                Upload Banner Image
               </label>
               {previewURL && (
                 <img
@@ -125,11 +132,17 @@ const Write = () => {
                   className="mt-2 w-24 h-24 object-cover rounded"
                 />
               )}
-
               <div className="buttons mt-4">
-                <button className="btn btn-outline mr-4">
-                  Save as a Draft
-                </button>
+                <input
+                  style={{ display: "none" }}
+                  type="file"
+                  name=""
+                  id="imgFile"
+                  onChange={handleAddImgToBlog}
+                />
+                <label htmlFor="imgFile" className="btn btn-outline mr-4">
+                  Add Img to Blog
+                </label>
                 <button className="btn btn-outline" onClick={handleClick}>
                   Publish
                 </button>
@@ -189,10 +202,6 @@ const Write = () => {
           </div>
         </div>
       </div>
-      <br />
-      <br />
-      <br />
-      <br />
       <br />
       <br />
       <br />

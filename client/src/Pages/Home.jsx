@@ -15,8 +15,6 @@ const Home = () => {
 
   const cat = useLocation().search;
 
-  console.log(location);
-
   useEffect(() => {
     const fetchdata = async () => {
       try {
@@ -28,6 +26,18 @@ const Home = () => {
     };
     fetchdata();
   }, [cat]);
+
+  const getCatLabel = (cat) => {
+    if (cat === "temple") {
+      return "เที่ยววัด";
+    } else if (cat === "food") {
+      return "เที่ยวตะลอนกิน";
+    } else if (cat === "mount") {
+      return "เที่ยวภูเขา";
+    } else if (cat === "sea") {
+      return "เที่ยวทะเล";
+    }
+  };
 
   return (
     <>
@@ -43,20 +53,26 @@ const Home = () => {
                     className="w-full h-72 rounded-lg"
                   />
                 </div>
-                <div className="content mt-4">
+                <div className="content mt-4 ">
                   <Link
                     to={`post/${post.id}`}
                     className="text-2xl font-bold text-blue-700 hover:underline"
                   >
                     {post.title}
+                    {post.cat && (
+                      <span className="ml-2 px-2 py-1 bg-red-400 text-white rounded-full text-sm">
+                        {getCatLabel(post.cat)}
+                      </span>
+                    )}
                   </Link>
+
                   <div className="mt-2">
                     <p
                       className="text-gray-700  "
                       style={{ textAlign: "justify" }}
                     >
                       <TextTruncate
-                        line={5}
+                        line={4}
                         element="span"
                         truncateText="…"
                         text={getText(post.description)}
@@ -67,13 +83,17 @@ const Home = () => {
                     to={`post/${post.id}`}
                     className="mt-3 inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                   >
-                    Read More
+                    อ่านเพิ่มเติม
                   </Link>
                 </div>
               </div>
             ))}
         </div>
       </div>
+      <br />
+      <br />
+      <br />
+      <br />
     </>
   );
 };

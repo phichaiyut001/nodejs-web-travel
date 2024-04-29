@@ -85,9 +85,11 @@ const Navbar = () => {
                 </ul>
               </details>
             </li>
-            <li>
-              <Link to="/write">เขียน Blog</Link>
-            </li>
+            {currentUser && (
+              <li>
+                <Link to="/write">เขียน Blog</Link>
+              </li>
+            )}
           </ul>
         </div>
         <div className="navbar-end mr-10">
