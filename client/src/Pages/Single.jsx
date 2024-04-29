@@ -47,6 +47,7 @@ const Single = () => {
     }
   };
 
+  // eslint-disable-next-line no-unused-vars
   const getText = (html) => {
     const doc = new DOMParser().parseFromString(html, "text/html");
 

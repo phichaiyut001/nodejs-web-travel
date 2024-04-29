@@ -26,6 +26,7 @@ const Layout = () => {
   );
 };
 
+// eslint-disable-next-line react/prop-types, no-unused-vars
 const ProtectedRoute = ({ element, path }) => {
   const { currentUser } = useContext(AuthContext);
 

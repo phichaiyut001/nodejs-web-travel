@@ -9,6 +9,7 @@ const Register = () => {
     email: "",
     password: "",
   });
+  // eslint-disable-next-line no-unused-vars
   const [err, setError] = useState(null);
 
   const navigate = useNavigate();
