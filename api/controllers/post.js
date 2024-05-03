@@ -44,6 +44,9 @@ export const addPost = (req, res) => {
       req.body.cat,
     ];
 
+    if (req.body.img === "") {
+      return res.status(400).json("Please add banner image");
+    }
     db.query(q, values, (err, data) => {
       if (err) return res.status(500).json(err);
       return res.json("Post has been created.");
@@ -86,6 +89,10 @@ export const updatePost = (req, res) => {
       req.body.img,
       req.body.cat,
     ];
+
+    if (req.body.img === "") {
+      return res.status(400).json("Please add banner image");
+    }
 
     db.query(q, [...values, postId, userInfo.id], (err, data) => {
       if (err) return res.status(500).json(err);

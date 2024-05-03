@@ -12,6 +12,7 @@ const getText = (html) => {
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
+  const [randomPost, setRandomPost] = useState(null);
 
   const cat = useLocation().search;
 
@@ -20,6 +21,8 @@ const Home = () => {
       try {
         const res = await axios.get(`api/posts${cat}`);
         setPosts(res.data);
+        const randomIndex = Math.floor(Math.random() * res.data.length);
+        setRandomPost(res.data[randomIndex]);
       } catch (err) {
         console.log(err);
       }
@@ -41,36 +44,65 @@ const Home = () => {
 
   return (
     <>
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-7 mb-3 ">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {posts &&
-            posts.map((post) => (
-              <div className="post flex flex-col" key={post.id}>
-                <div className="img">
-                  <img
-                    src={`../upload/${post.img}`}
-                    alt=""
-                    className="w-full h-72 rounded-lg"
-                  />
+      <main className="container mx-auto my-12 max-w-6xl px-4 md:px-6">
+        {randomPost && (
+          <section
+            key={randomPost.id}
+            className="mb-12 grid gap-6 md:grid-cols-[1fr_400px] md:gap-12"
+          >
+            <Link to={`post/${randomPost.id}`}>
+              <img
+                alt="Featured Blog Post"
+                className="aspect-video w-full overflow-hidden rounded-lg object-cover"
+                height={500}
+                src={`../upload/${randomPost.img}`}
+                width={800}
+              />
+            </Link>
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <div className="inline-block rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800">
+                  {getCatLabel(randomPost.cat)}
                 </div>
-                <div className="content mt-4 ">
-                  <Link
-                    to={`post/${post.id}`}
-                    className="text-2xl font-bold text-blue-700 hover:underline"
-                  >
-                    {post.title}
-                    {post.cat && (
-                      <span className="ml-2 px-2 py-1 bg-red-400 text-white rounded-full text-sm">
-                        {getCatLabel(post.cat)}
-                      </span>
-                    )}
+                <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl">
+                  {randomPost.title}
+                </h1>
+              </div>
+              <p className="text-gray-500 dark:text-gray-400">
+                <TextTruncate
+                  line={4}
+                  element="span"
+                  truncateText="…"
+                  text={getText(randomPost.description)}
+                />
+              </p>
+              <Link to={`post/${randomPost.id}`}>
+                <button className="btn btn-outline">Read More</button>
+              </Link>
+            </div>
+          </section>
+        )}
+        <section>
+          <h2 className="mb-6 text-2xl font-bold">Recent Posts</h2>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {posts &&
+              posts.map((post) => (
+                <card key={post.id}>
+                  <Link to={`post/${post.id}`}>
+                    <img
+                      alt="Blog Post Image"
+                      className="aspect-video w-full overflow-hidden rounded-t-lg object-cover"
+                      height={250}
+                      src={`../upload/${post.img}`}
+                      width={400}
+                    />
                   </Link>
-
-                  <div className="mt-2">
-                    <p
-                      className="text-gray-700  "
-                      style={{ textAlign: "justify" }}
-                    >
+                  <cardContent className="space-y-2 p-4">
+                    <div className="inline-block rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800 mt-3 ">
+                      {getCatLabel(post.cat)}
+                    </div>
+                    <h3 className="text-lg font-semibold">{post.title}</h3>
+                    <p className="text-gray-500 dark:text-gray-400">
                       <TextTruncate
                         line={4}
                         element="span"
@@ -78,22 +110,15 @@ const Home = () => {
                         text={getText(post.description)}
                       />
                     </p>
-                  </div>
-                  <Link
-                    to={`post/${post.id}`}
-                    className="mt-3 inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                  >
-                    อ่านเพิ่มเติม
-                  </Link>
-                </div>
-              </div>
-            ))}
-        </div>
-      </div>
-      <br />
-      <br />
-      <br />
-      <br />
+                    <Link to={`post/${post.id}`}>
+                      <button className="btn btn-outline">Read More</button>
+                    </Link>
+                  </cardContent>
+                </card>
+              ))}
+          </div>
+        </section>
+      </main>
     </>
   );
 };
