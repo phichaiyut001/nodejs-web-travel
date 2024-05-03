@@ -211,7 +211,7 @@ const Posts = () => {
   ];
 
   const [page, setPage] = useState(1);
-  const rowsPerPage = 4;
+  const rowsPerPage = 6;
 
   const pages = Math.ceil(data.length / rowsPerPage);
 

@@ -17,6 +17,8 @@ import { useLocation } from "react-router-dom";
 import Dashboard from "./Pages/Dashboard/Dashboard";
 import Navadmin from "./Pages/Dashboard/components/NavAdmin";
 import Posts from "./Pages/Dashboard/Posts";
+import Users from "./Pages/Dashboard/Users";
+
 const Layout = () => {
   const location = useLocation();
   const isWritePage = location.pathname === "/write";
@@ -91,6 +93,10 @@ const router = createBrowserRouter([
       {
         path: "/posts",
         element: <ProtectedRoute element={<Posts />} />,
+      },
+      {
+        path: "/users",
+        element: <ProtectedRoute element={<Users />} />,
       },
     ],
   },
