@@ -37,16 +37,16 @@ export const register = (req, res) => {
 
 export const login = (req, res) => {
   if (!req.body.username || !req.body.password) {
-    return res.status(400).json("กรุณากรอก ข้อมูล");
+    return res.status(400).json({ error: "กรุณากรอก ข้อมูล" });
   }
 
   //เช็ค User
-
   const q = "SELECT * FROM users WHERE username = ?";
 
   db.query(q, [req.body.username], (err, data) => {
-    if (err) return res.json(err);
-    if (data.length === 0) return res.status(404).json("User not found!");
+    if (err) return res.status(500).json({ error: err });
+    if (data.length === 0)
+      return res.status(404).json({ error: "User not found!" });
 
     //check passwrod
     const isPasswordCorrect = bcrypt.compareSync(
@@ -55,17 +55,29 @@ export const login = (req, res) => {
     );
 
     if (!isPasswordCorrect)
-      return res.status(400).json("Username หรือ Password ผิด!");
+      return res.status(400).json({ error: "Username หรือ Password ผิด!" });
 
-    const token = jwt.sign({ id: data[0].id }, "jwtkey");
-    const { password, ...other } = data[0];
+    if (data[0].isAdmin === 1) {
+      const token = jwt.sign({ id: data[0].id }, "jwtkey");
+      const { password, ...other } = data[0];
 
-    res
-      .cookie("access_token", token, {
-        httpOnly: true,
-      })
-      .status(200)
-      .json(other);
+      res
+        .cookie("access_token", token, {
+          httpOnly: true,
+        })
+        .status(200)
+        .json({ ...other, isAdmin: true });
+    } else {
+      const token = jwt.sign({ id: data[0].id }, "jwtkey");
+      const { password, isAdmin, ...other } = data[0];
+
+      res
+        .cookie("access_token", token, {
+          httpOnly: true,
+        })
+        .status(200)
+        .json(other);
+    }
   });
 };
 

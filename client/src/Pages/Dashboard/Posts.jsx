@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import {
   Table,
   TableHeader,
@@ -11,217 +11,94 @@ import {
 } from "@nextui-org/react";
 
 import { Pagination, Modal, useModal } from "@geist-ui/core";
-
-import phiphiImage from "../../../public/upload/1713844132337phiphi.jpg";
+import axios from "axios";
+import moment from "moment";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../context/authContext";
+import Swal from "sweetalert2";
 
 const Posts = () => {
+  const { currentUser } = useContext(AuthContext);
+  const [posts, setPosts] = useState([]);
+  const [post, setPost] = useState({});
+  const navigate = useNavigate();
+  const { id } = useParams();
   const { setVisible, bindings } = useModal();
+  const cat = useLocation().search;
+
+  useEffect(() => {
+    const fetchdata = async () => {
+      try {
+        const res = await axios.get(`/api/posts/${cat}`);
+        setPosts(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchdata();
+  }, [cat, posts]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(`/api/posts/${id}`);
+        setPost(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  }, [id]);
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const data = [
-    {
-      image: phiphiImage,
-      title: "The Future of Web Development",
-      author: "Jane Doe",
-      published: "May 1, 2023",
-      status: "Published",
-      action: (
-        <>
-          <Button className="mr-2" size="icon" variant="outline">
-            <DeleteIcon className="h-4 w-4" />
-            <span className="sr-only">Edit</span>
-          </Button>
-          <Button className="text-red-500" size="icon" variant="outline">
-            <TrashIcon className="h-4 w-4" />
-            <span className="sr-only">Delete</span>
-          </Button>
-        </>
-      ),
-    },
-    {
-      image: phiphiImage,
-      title: "The Future of Web Development",
-      author: "Jane Doe",
-      published: "May 1, 2023",
-      status: "Published",
-      action: (
-        <>
-          <Button className="mr-2" size="icon" variant="outline">
-            <DeleteIcon className="h-4 w-4" />
-            <span className="sr-only">Edit</span>
-          </Button>
-          <Button className="text-red-500" size="icon" variant="outline">
-            <TrashIcon className="h-4 w-4" />
-            <span className="sr-only">Delete</span>
-          </Button>
-        </>
-      ),
-    },
-    {
-      image: phiphiImage,
-      title: "The Future of Web Development",
-      author: "Jane Doe",
-      published: "May 1, 2023",
-      status: "Published",
-      action: (
-        <>
-          <Button className="mr-2" size="icon" variant="outline">
-            <DeleteIcon className="h-4 w-4" />
-            <span className="sr-only">Edit</span>
-          </Button>
-          <Button className="text-red-500" size="icon" variant="outline">
-            <TrashIcon className="h-4 w-4" />
-            <span className="sr-only">Delete</span>
-          </Button>
-        </>
-      ),
-    },
-    {
-      image: phiphiImage,
-      title: "The Future of Web Development",
-      author: "Jane Doe",
-      published: "May 1, 2023",
-      status: "Published",
-      action: (
-        <>
-          <Button className="mr-2" size="icon" variant="outline">
-            <DeleteIcon className="h-4 w-4" />
-            <span className="sr-only">Edit</span>
-          </Button>
-          <Button className="text-red-500" size="icon" variant="outline">
-            <TrashIcon className="h-4 w-4" />
-            <span className="sr-only">Delete</span>
-          </Button>
-        </>
-      ),
-    },
-    {
-      image: phiphiImage,
-      title: "The Future of Web Development",
-      author: "Jane Doe",
-      published: "May 1, 2023",
-      status: "Published",
-      action: (
-        <>
-          <Button className="mr-2" size="icon" variant="outline">
-            <DeleteIcon className="h-4 w-4" />
-            <span className="sr-only">Edit</span>
-          </Button>
-          <Button className="text-red-500" size="icon" variant="outline">
-            <TrashIcon className="h-4 w-4" />
-            <span className="sr-only">Delete</span>
-          </Button>
-        </>
-      ),
-    },
-    {
-      image: phiphiImage,
-      title: "The Future of Web Development",
-      author: "Jane Doe",
-      published: "May 1, 2023",
-      status: "Published",
-      action: (
-        <>
-          <Button className="mr-2" size="icon" variant="outline">
-            <DeleteIcon className="h-4 w-4" />
-            <span className="sr-only">Edit</span>
-          </Button>
-          <Button className="text-red-500" size="icon" variant="outline">
-            <TrashIcon className="h-4 w-4" />
-            <span className="sr-only">Delete</span>
-          </Button>
-        </>
-      ),
-    },
-    {
-      image: phiphiImage,
-      title: "The Future of Web Development",
-      author: "Jane Doe",
-      published: "May 1, 2023",
-      status: "Published",
-      action: (
-        <>
-          <Button className="mr-2" size="icon" variant="outline">
-            <DeleteIcon className="h-4 w-4" />
-            <span className="sr-only">Edit</span>
-          </Button>
-          <Button className="text-red-500" size="icon" variant="outline">
-            <TrashIcon className="h-4 w-4" />
-            <span className="sr-only">Delete</span>
-          </Button>
-        </>
-      ),
-    },
-    {
-      image: phiphiImage,
-      title: "The Future of Web Development",
-      author: "Jane Doe",
-      published: "May 1, 2023",
-      status: "Published",
-      action: (
-        <>
-          <Button className="mr-2" size="icon" variant="outline">
-            <DeleteIcon className="h-4 w-4" />
-            <span className="sr-only">Edit</span>
-          </Button>
-          <Button className="text-red-500" size="icon" variant="outline">
-            <TrashIcon className="h-4 w-4" />
-            <span className="sr-only">Delete</span>
-          </Button>
-        </>
-      ),
-    },
-    {
-      image: phiphiImage,
-      title: "The Future of Web Development",
-      author: "Jane Doe",
-      published: "May 1, 2023",
-      status: "Published",
-      action: (
-        <>
-          <Button className="mr-2" size="icon" variant="outline">
-            <DeleteIcon className="h-4 w-4" />
-            <span className="sr-only">Edit</span>
-          </Button>
-          <Button className="text-red-500" size="icon" variant="outline">
-            <TrashIcon className="h-4 w-4" />
-            <span className="sr-only">Delete</span>
-          </Button>
-        </>
-      ),
-    },
-    {
-      image: phiphiImage,
-      title: "The Future of Web Developmentssssssssssssssssss",
-      author: "Jane Doe",
-      published: "May 1, 2023",
-      status: "Published",
-      action: (
-        <>
-          <Button className="mr-2" size="icon" variant="outline">
-            <DeleteIcon className="h-4 w-4" />
-            <span className="sr-only">Edit</span>
-          </Button>
-          <Button className="text-red-500" size="icon" variant="outline">
-            <TrashIcon className="h-4 w-4" />
-            <span className="sr-only">Delete</span>
-          </Button>
-        </>
-      ),
-    },
-    // สร้างข้อมูลอื่นๆ ตามต้องการ
-  ];
 
   const [page, setPage] = useState(1);
   const rowsPerPage = 6;
 
-  const pages = Math.ceil(data.length / rowsPerPage);
+  const pages = Math.ceil(posts.length / rowsPerPage);
 
   const items = useMemo(() => {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
 
-    return data.slice(start, end);
-  }, [page, data]);
+    return posts.slice(start, end);
+  }, [page, posts]);
+
+  const getCatLabel = (cat) => {
+    if (cat === "temple") {
+      return "เที่ยววัด";
+    } else if (cat === "food") {
+      return "เที่ยวตะลอนกิน";
+    } else if (cat === "mount") {
+      return "เที่ยวภูเขา";
+    } else if (cat === "sea") {
+      return "เที่ยวทะเล";
+    }
+  };
+
+  const handleDelete = async (postId, e) => {
+    e.preventDefault();
+    try {
+      const result = await Swal.fire({
+        title: "ต้องการลบ โพสต์นี้หรือไม่?",
+        text: "",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      });
+
+      if (result.isConfirmed) {
+        await axios.delete(`/api/posts/${postId}`);
+        const updatedPosts = posts.filter((item) => item.id !== postId);
+        setPosts(updatedPosts);
+        Swal.fire("Deleted!", "Your post has been deleted.", "success");
+      }
+    } catch (err) {
+      throw new Error("Failed to delete post");
+    }
+  };
 
   return (
     <>
@@ -252,112 +129,91 @@ const Posts = () => {
             <TableHeader>
               <TableColumn>Image</TableColumn>
               <TableColumn>Title</TableColumn>
-              <TableColumn>Author</TableColumn>
-              <TableColumn>Published</TableColumn>
+
+              <TableColumn>Category</TableColumn>
               <TableColumn>Status</TableColumn>
               <TableColumn>Action</TableColumn>
             </TableHeader>
             <TableBody>
-              {items.map((item, index) => (
-                <TableRow key={index} className=" border">
-                  <TableCell>
-                    <img
-                      onClick={() => setVisible(true)}
-                      alt="Blog Image"
-                      className="rounded-md object-cover"
-                      height={80}
-                      src={item.image}
-                      style={{
-                        aspectRatio: "80/80",
-                        objectFit: "cover",
-                      }}
-                      width={80}
-                    />
-                  </TableCell>
-                  <TableCell className="font-medium">{item.title}</TableCell>
-                  <TableCell>{item.author}</TableCell>
-                  <TableCell>{item.published}</TableCell>
-                  <TableCell>
-                    <Badge variant="success">{item.status}</Badge>
-                  </TableCell>
-                  <TableCell>{item.action}</TableCell>
-                </TableRow>
-              ))}
+              {items &&
+                items.map((item) => (
+                  <TableRow key={item.id} className=" border">
+                    <TableCell>
+                      <img
+                        onClick={() => {
+                          setPost(item);
+                          setVisible(true);
+                        }}
+                        alt="Blog Image"
+                        className="rounded-md object-cover"
+                        height={80}
+                        src={`/upload/${item.img}`}
+                        style={{
+                          aspectRatio: "80/80",
+                          objectFit: "cover",
+                        }}
+                        width={80}
+                      />
+                    </TableCell>
+                    <TableCell className="font-medium">{item.title}</TableCell>
+
+                    <TableCell>
+                      <div className="inline-block rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800 mt-3 ">
+                        {getCatLabel(item.cat)}
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant="success">
+                        {moment(item.date).fromNow()}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      {" "}
+                      <Button className="mr-2" size="icon" variant="outline">
+                        <DeleteIcon className="h-4 w-4" />
+                        <span className="sr-only">Edit</span>
+                      </Button>
+                      <Button
+                        className="text-red-500"
+                        size="icon"
+                        variant="outline"
+                        onClick={(e) => handleDelete(item.id, e)}
+                      >
+                        <TrashIcon className="h-4 w-4" />
+                        <span className="sr-only">Delete</span>
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           </Table>
         </div>
       </div>
 
       <Modal width="60rem" {...bindings}>
-        <Modal.Title>My Favorites</Modal.Title>
+        {/* <Modal.Title>My Favorites</Modal.Title> */}
         <Modal.Content>
           <div key="1" className="flex justify-center">
             <article className="prose prose-gray max-w-3xl mx-4 my-12 dark:prose-invert">
               <h1 className="text-4xl font-extrabold tracking-tight">
-                The Surprising Benefits of Laughter
+                {post.title}
               </h1>
               <br />
-              <figure className="lg:-mx-12 xl:-mx-20">
+              <figure className="mx-auto px-4 sm:px-6 lg:px-8 mb-10">
                 <img
                   alt="People laughing together"
-                  className="aspect-video overflow-hidden rounded-lg object-contain"
-                  height="340"
-                  src={phiphiImage}
-                  width="1250"
+                  className="w-full h-auto object-cover rounded"
+                  src={`/upload/${post.img}`}
                 />
-                <figcaption className="text-center">
-                  Laughter can help reduce stress and improve overall
-                  well-being.
-                </figcaption>
+                <figcaption className="text-center"></figcaption>
               </figure>
               <p className="text-gray-500 dark:text-gray-400">
-                By Jane Doe | Published on May 3, 2024
+                {post.username} | {moment(post.date).fromNow()}
               </p>
-              <p>
-                Laughter is often described as the best medicine, and for good
-                reason. Numerous studies have shown that laughter has a wide
-                range of physical and mental health benefits. From reducing
-                stress to boosting the immune system, the power of laughter
-                should not be underestimated.
-              </p>
-              <h2>Stress Relief</h2>
-              <p>
-                One of the most well-known benefits of laughter is its ability
-                to alleviate stress. When we laugh, our bodies release
-                endorphins, which are natural feel-good chemicals that can help
-                reduce the physical symptoms of stress, such as muscle tension
-                and elevated heart rate. Laughter also triggers the release of
-                dopamine, a neurotransmitter that plays a key role in regulating
-                mood and emotions.
-              </p>
-
-              <h2>Immune System Boost</h2>
-              <p>
-                Laughter has also been shown to have a positive impact on the
-                immune system. When we laugh, our bodies produce more of the
-                antibody immunoglobulin A (IgA), which helps protect us from
-                infections and illnesses. Additionally, laughter has been linked
-                to a decrease in the production of cortisol, a hormone that can
-                suppress the immune system when present in high levels.
-              </p>
-              <h2>Improved Cardiovascular Health</h2>
-              <p>
-                Believe it or not, laughter can also benefit our cardiovascular
-                health. Studies have found that laughter can improve blood flow
-                and reduce the risk of heart disease by lowering blood pressure
-                and improving the function of blood vessels. Laughter has even
-                been shown to have a similar effect on the body as exercise,
-                making it a valuable tool for maintaining a healthy heart.
-              </p>
-              <p>
-                In conclusion, the benefits of laughter are truly remarkable.
-                Whether it's reducing stress, boosting the immune system, or
-                improving cardiovascular health, incorporating more laughter
-                into our daily lives can have a profound impact on our overall
-                well-being. So, the next time you're feeling stressed or down,
-                try to find something that makes you laugh – your body and mind
-                will thank you.
-              </p>
+              <p
+                className="desc mt-3 md:mt-0 md:col-start-1 md:col-end-3 text-left md:text-left whitespace-pre-line pl-0 md:pl-0"
+                dangerouslySetInnerHTML={{ __html: post.description }}
+              ></p>
             </article>
           </div>
         </Modal.Content>

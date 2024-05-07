@@ -41,7 +41,17 @@ const LayoutAdmin = () => {
   );
 };
 // eslint-disable-next-line react/prop-types, no-unused-vars
-const ProtectedRoute = ({ element, path }) => {
+const ProtectedRouteAdmin = ({ element, path }) => {
+  const { currentUser } = useContext(AuthContext);
+
+  if (!currentUser || !element || !currentUser.isAdmin) {
+    return <Navigate to="/" replace />;
+  }
+
+  return element;
+};
+// eslint-disable-next-line react/prop-types, no-unused-vars
+const ProtectedRouteUser = ({ element, path }) => {
   const { currentUser } = useContext(AuthContext);
 
   if (!currentUser || !element) {
@@ -66,7 +76,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/write",
-        element: <ProtectedRoute element={<Write />} />,
+        element: <ProtectedRouteUser element={<Write />} />,
       },
     ],
   },
@@ -88,15 +98,15 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/dashboard",
-        element: <ProtectedRoute element={<Dashboard />} />,
+        element: <ProtectedRouteAdmin element={<Dashboard />} />,
       },
       {
         path: "/posts",
-        element: <ProtectedRoute element={<Posts />} />,
+        element: <ProtectedRouteAdmin element={<Posts />} />,
       },
       {
         path: "/users",
-        element: <ProtectedRoute element={<Users />} />,
+        element: <ProtectedRouteAdmin element={<Users />} />,
       },
     ],
   },

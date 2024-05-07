@@ -26,16 +26,17 @@ const Login = () => {
       await login(inputs);
       Swal.fire({
         icon: "success",
-        title: "Login succeess",
+        title: "Login success",
         showConfirmButton: false,
-        timer: 800,
+        timer: 600,
+      }).then(() => {
+        navigate("/");
       });
-      navigate("/");
     } catch (err) {
       setError(err.response.data);
       Swal.fire({
         icon: "error",
-        title: err.response.data || "Unexpected Application Error!",
+        title: "Login failed",
         text: "Username หรือ password ผิด",
         footer: '<a href="#">Why do I have this issue?</a>',
       });

@@ -70,13 +70,14 @@ const Navbar2 = () => {
                 เข้าสู่ระบบ
               </Link>
             )}
-
-            <Link
-              className="btn bg-cyan-400 text-white text-sm font-medium hover:underline underline-offset-4"
-              to="/dashboard"
-            >
-              Dashboard
-            </Link>
+            {currentUser && currentUser.isAdmin && (
+              <Link
+                className="btn bg-cyan-400 text-white text-sm font-medium hover:underline underline-offset-4"
+                to="/dashboard"
+              >
+                Dashboard
+              </Link>
+            )}
           </nav>
           <button className="md:hidden" size="icon">
             <MenuIcon className="h-6 w-6" />

@@ -16,6 +16,7 @@ export const AuthContextProvider = ({ children }) => {
       setCurrentUser(res.data);
     } catch (error) {
       console.error("Login error:", error);
+      throw error; // ส่ง error ออกมาเพื่อให้ handleSubmit จัดการ
     }
   };
 
@@ -49,8 +50,10 @@ export const AuthContextProvider = ({ children }) => {
     localStorage.setItem("user", JSON.stringify(currentUser));
   }, [currentUser]);
 
+  const isAdmin = currentUser && currentUser.isAdmin;
+
   return (
-    <AuthContext.Provider value={{ currentUser, login, logout }}>
+    <AuthContext.Provider value={{ currentUser, login, logout, isAdmin }}>
       {children}
     </AuthContext.Provider>
   );
