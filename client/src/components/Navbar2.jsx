@@ -1,10 +1,15 @@
-import { useContext } from "react";
+import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 
 import { AuthContext } from "../context/authContext";
-
+import { Drawer, Button } from "@geist-ui/core";
 const Navbar2 = () => {
   const { currentUser, logout } = useContext(AuthContext);
+  const [isOpen, setIsOpen] = useState(false);
+  const [state, setState] = useState(false);
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
 
   return (
     <>
@@ -14,57 +19,70 @@ const Navbar2 = () => {
             <MountainIcon className="h-6 w-6" />
             <span className="text-lg font-semibold">Travel Blog</span>
           </Link>
-          <nav className="hidden space-x-4 md:flex">
+          <button className="md:hidden" size="icon">
+            <Button
+              auto
+              onClick={() => setState(true)}
+              scale={1 / 2}
+              icon={<MenuIcon className="h-6 w-6" />}
+            ></Button>
+          </button>
+          <nav
+            className={
+              "md:flex flex-col md:flex-row md:items-center space-y-4 md:space-y-0 md:space-x-4" +
+              (isOpen ? " block" : " hidden")
+            }
+          >
             <Link
-              className="text-sm font-medium hover:underline underline-offset-4  mt-3"
+              className="text-sm font-medium hover:underline underline-offset-4  mt-3 md:mt-0"
               to="/"
             >
               Home
             </Link>
             <Link
-              className="text-sm font-medium hover:underline underline-offset-4  mt-3"
+              className="text-sm font-medium hover:underline underline-offset-4  mt-3 md:mt-0"
               to="/?cat=temple"
             >
               เที่ยววัด
             </Link>
             <Link
-              className="text-sm font-medium hover:underline underline-offset-4  mt-3"
+              className="text-sm font-medium hover:underline underline-offset-4  mt-3 md:mt-0"
               to="/?cat=sea"
             >
               เที่ยวทะเล
             </Link>
             <Link
-              className="text-sm font-medium hover:underline underline-offset-4  mt-3"
+              className="text-sm font-medium hover:underline underline-offset-4  mt-3 md:mt-0"
               to="/?cat=mount"
             >
               เที่ยวภูเขา
             </Link>
             <Link
-              className="text-sm font-medium hover:underline underline-offset-4  mt-3"
+              className="text-sm font-medium hover:underline underline-offset-4  mt-3 md:mt-0"
               to="/?cat=food"
             >
               ตะลอนกิน
             </Link>
             {currentUser && (
               <Link
-                className="text-sm font-medium hover:underline underline-offset-4 mt-3"
+                className="text-sm font-medium hover:underline underline-offset-4 mt-3 md:mt-0"
                 to="/write"
               >
                 เขียน Blog
               </Link>
             )}
 
-            <p className="text-sm mt-3 ">{currentUser?.username}</p>
+            <p className="text-sm mt-3 md:mt-0">{currentUser?.username}</p>
             {currentUser ? (
               <Link
-                className="btn bg-red-400 text-white text-sm font-medium hover:underline underline-offset-4"
+                className="btn bg-red-400 text-white text-sm font-medium hover:underline underline-offset-4 mt-3 md:mt-0"
                 onClick={logout}
               >
                 ออกจากระบบ
               </Link>
             ) : (
               <Link
-                className="btn bg-red-400 text-white text-sm font-medium hover:underline underline-offset-4"
+                className="btn bg-red-400 text-white text-sm font-medium hover:underline underline-offset-4 mt-3 md:mt-0"
                 to="/login"
               >
                 เข้าสู่ระบบ
@@ -72,22 +90,114 @@ const Navbar2 = () => {
             )}
             {currentUser && currentUser.isAdmin && (
               <Link
-                className="btn bg-cyan-400 text-white text-sm font-medium hover:underline underline-offset-4"
+                className="btn bg-cyan-400 text-white text-sm font-medium hover:underline underline-offset-4 mt-3 md:mt-0"
                 to="/dashboard"
               >
                 Dashboard
               </Link>
             )}
+
+            <Drawer
+              visible={state}
+              onClose={() => setState(false)}
+              placement="right"
+            >
+              <Drawer.Title>Trave Blog</Drawer.Title>
+              <Drawer.Subtitle>
+                {" "}
+                <p className="text-sm mt-3 md:mt-0">
+                  User: {currentUser?.username}
+                </p>
+              </Drawer.Subtitle>
+              <Drawer.Content onClick={() => setState(false)}>
+                <Link
+                  className="text-sm font-medium hover:underline underline-offset-4  mt-3 md:mt-0"
+                  to="/"
+                >
+                  Home
+                </Link>
+              </Drawer.Content>
+              <Drawer.Content onClick={() => setState(false)}>
+                {" "}
+                <Link
+                  className="text-sm font-medium hover:underline underline-offset-4  mt-3 md:mt-0"
+                  to="/?cat=temple"
+                >
+                  เที่ยววัด
+                </Link>
+              </Drawer.Content>
+              <Drawer.Content onClick={() => setState(false)}>
+                {" "}
+                <Link
+                  className="text-sm font-medium hover:underline underline-offset-4  mt-3 md:mt-0"
+                  to="/?cat=sea"
+                >
+                  เที่ยวทะเล
+                </Link>
+              </Drawer.Content>
+              <Drawer.Content onClick={() => setState(false)}>
+                {" "}
+                <Link
+                  className="text-sm font-medium hover:underline underline-offset-4  mt-3 md:mt-0"
+                  to="/?cat=mount"
+                >
+                  เที่ยวภูเขา
+                </Link>
+              </Drawer.Content>
+              <Drawer.Content onClick={() => setState(false)}>
+                {" "}
+                <Link
+                  className="text-sm font-medium hover:underline underline-offset-4  mt-3 md:mt-0"
+                  to="/?cat=food"
+                >
+                  ตะลอนกิน
+                </Link>
+              </Drawer.Content>
+              <Drawer.Content onClick={() => setState(false)}>
+                {" "}
+                {currentUser && (
+                  <Link
+                    className="text-sm font-medium hover:underline underline-offset-4 mt-3 md:mt-0"
+                    to="/write"
+                  >
+                    เขียน Blog
+                  </Link>
+                )}
+              </Drawer.Content>
+              <Drawer.Content onClick={() => setIsOpen(false)}>
+                {" "}
+                {currentUser ? (
+                  <Link
+                    className="btn bg-red-400 text-white text-sm font-medium hover:underline underline-offset-4 mt-3 md:mt-0"
+                    onClick={logout}
+                  >
+                    ออกจากระบบ
+                  </Link>
+                ) : (
+                  <Link
+                    className="btn bg-red-400 text-white text-sm font-medium hover:underline underline-offset-4 mt-3 md:mt-0"
+                    to="/login"
+                  >
+                    เข้าสู่ระบบ
+                  </Link>
+                )}
+                {currentUser && currentUser.isAdmin && (
+                  <Link
+                    className="btn bg-cyan-400 text-white text-sm font-medium hover:underline underline-offset-4 mt-3 md:mt-0"
+                    to="/dashboard"
+                  >
+                    Dashboard
+                  </Link>
+                )}
+              </Drawer.Content>
+            </Drawer>
           </nav>
-          <button className="md:hidden" size="icon">
-            <MenuIcon className="h-6 w-6" />
-            <span className="sr-only">Toggle navigation menu</span>
-          </button>
         </div>
       </header>
     </>
   );
 };
+
 function MenuIcon(props) {
   return (
     <svg
