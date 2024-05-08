@@ -8,9 +8,9 @@ import {
   TableCell,
   Button,
 } from "@nextui-org/react";
-
 import { Pagination } from "@geist-ui/core";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
@@ -19,7 +19,8 @@ const Users = () => {
     const fetchdata = async () => {
       try {
         const res = await axios.get("/api/users");
-        setUsers(res.data);
+        const filteredUsers = res.data.filter((user) => !user.isAdmin);
+        setUsers(filteredUsers);
       } catch (err) {
         console.log(err);
       }
@@ -27,7 +28,6 @@ const Users = () => {
     fetchdata();
   }, []);
 
-  console.log(users);
   // eslint-disable-next-line react-hooks/exhaustive-deps
 
   const [page, setPage] = useState(1);
@@ -41,6 +41,31 @@ const Users = () => {
 
     return users.slice(start, end);
   }, [page, users]);
+
+  const handleDelete = async (userId, e) => {
+    // รับ userId มาจากการคลิกที่ปุ่มลบ
+    e.preventDefault();
+    try {
+      const result = await Swal.fire({
+        title: "ต้องการลบผู้ใช้นี้หรือไม่?",
+        text: "",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "ใช่, ลบ!",
+      });
+
+      if (result.isConfirmed) {
+        await axios.delete(`/api/users/${userId}`); // เปลี่ยนเส้นทางเป็น `/api/users/${userId}`
+        const updatedUsers = users.filter((user) => user.id !== userId);
+        setUsers(updatedUsers);
+        Swal.fire("Deleted!", "ผู้ใช้ถูกลบแล้ว", "success");
+      }
+    } catch (err) {
+      throw new Error("ลบผู้ใช้ไม่สำเร็จ");
+    }
+  };
 
   return (
     <>
@@ -94,7 +119,10 @@ const Users = () => {
                         className="text-red-500"
                         size="icon"
                         variant="outline"
-                        onClick={(e) => handleDelete(item.id, e)}
+                        onClick={(e) => {
+                          console.log("Delete User ID:", item.id); // เพิ่มบรรทัดนี้เข้าไป
+                          handleDelete(item.id, e);
+                        }}
                       >
                         <TrashIcon className="h-4 w-4" />
                         <span className="sr-only">Delete</span>
