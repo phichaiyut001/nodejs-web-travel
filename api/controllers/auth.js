@@ -90,3 +90,14 @@ export const logout = (req, res) => {
     .status(200)
     .json(" User has been logout");
 };
+
+// Middleware เพื่อตรวจสอบว่าผู้ใช้เป็น admin หรือไม่
+export const isAdmin = (userId, callback) => {
+  const q = "SELECT isAdmin FROM users WHERE id = ?";
+
+  db.query(q, [userId], (err, data) => {
+    if (err) return callback(err);
+    if (data.length === 0) return callback("User not found!");
+    callback(null, data[0].isAdmin === 1);
+  });
+};

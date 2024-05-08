@@ -7,6 +7,8 @@ const Navbar2 = () => {
   const { currentUser, logout } = useContext(AuthContext);
   const [isOpen, setIsOpen] = useState(false);
   const [state, setState] = useState(false);
+
+  // eslint-disable-next-line no-unused-vars
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };

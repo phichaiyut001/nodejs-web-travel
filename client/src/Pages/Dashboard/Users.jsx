@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Table,
   TableHeader,
@@ -6,251 +6,41 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  Badge,
   Button,
 } from "@nextui-org/react";
 
 import { Pagination } from "@geist-ui/core";
+import axios from "axios";
 
 const Users = () => {
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const data = [
-    {
-      id: "18",
-      username: "camp",
-      email: "camp@gmail.com",
-      action: (
-        <>
-          <Button className="mr-2" size="icon" variant="outline">
-            <DeleteIcon className="h-4 w-4" />
-            <span className="sr-only">Edit</span>
-          </Button>
-          <Button className="text-red-500" size="icon" variant="outline">
-            <TrashIcon className="h-4 w-4" />
-            <span className="sr-only">Delete</span>
-          </Button>
-        </>
-      ),
-    },
-    {
-      id: "18",
-      username: "camp",
-      email: "camp@gmail.com",
-      action: (
-        <>
-          <Button className="mr-2" size="icon" variant="outline">
-            <DeleteIcon className="h-4 w-4" />
-            <span className="sr-only">Edit</span>
-          </Button>
-          <Button className="text-red-500" size="icon" variant="outline">
-            <TrashIcon className="h-4 w-4" />
-            <span className="sr-only">Delete</span>
-          </Button>
-        </>
-      ),
-    },
-    {
-      id: "18",
-      username: "camp",
-      email: "camp@gmail.com",
-      action: (
-        <>
-          <Button className="mr-2" size="icon" variant="outline">
-            <DeleteIcon className="h-4 w-4" />
-            <span className="sr-only">Edit</span>
-          </Button>
-          <Button className="text-red-500" size="icon" variant="outline">
-            <TrashIcon className="h-4 w-4" />
-            <span className="sr-only">Delete</span>
-          </Button>
-        </>
-      ),
-    },
-    {
-      id: "18",
-      username: "camp",
-      email: "camp@gmail.com",
-      action: (
-        <>
-          <Button className="mr-2" size="icon" variant="outline">
-            <DeleteIcon className="h-4 w-4" />
-            <span className="sr-only">Edit</span>
-          </Button>
-          <Button className="text-red-500" size="icon" variant="outline">
-            <TrashIcon className="h-4 w-4" />
-            <span className="sr-only">Delete</span>
-          </Button>
-        </>
-      ),
-    },
-    {
-      id: "18",
-      username: "camp",
-      email: "camp@gmail.com",
-      action: (
-        <>
-          <Button className="mr-2" size="icon" variant="outline">
-            <DeleteIcon className="h-4 w-4" />
-            <span className="sr-only">Edit</span>
-          </Button>
-          <Button className="text-red-500" size="icon" variant="outline">
-            <TrashIcon className="h-4 w-4" />
-            <span className="sr-only">Delete</span>
-          </Button>
-        </>
-      ),
-    },
-    {
-      id: "18",
-      username: "camp",
-      email: "camp@gmail.com",
-      action: (
-        <>
-          <Button className="mr-2" size="icon" variant="outline">
-            <DeleteIcon className="h-4 w-4" />
-            <span className="sr-only">Edit</span>
-          </Button>
-          <Button className="text-red-500" size="icon" variant="outline">
-            <TrashIcon className="h-4 w-4" />
-            <span className="sr-only">Delete</span>
-          </Button>
-        </>
-      ),
-    },
-    {
-      id: "18",
-      username: "camp",
-      email: "camp@gmail.com",
-      action: (
-        <>
-          <Button className="mr-2" size="icon" variant="outline">
-            <DeleteIcon className="h-4 w-4" />
-            <span className="sr-only">Edit</span>
-          </Button>
-          <Button className="text-red-500" size="icon" variant="outline">
-            <TrashIcon className="h-4 w-4" />
-            <span className="sr-only">Delete</span>
-          </Button>
-        </>
-      ),
-    },
-    {
-      id: "18",
-      username: "camp",
-      email: "camp@gmail.com",
-      action: (
-        <>
-          <Button className="mr-2" size="icon" variant="outline">
-            <DeleteIcon className="h-4 w-4" />
-            <span className="sr-only">Edit</span>
-          </Button>
-          <Button className="text-red-500" size="icon" variant="outline">
-            <TrashIcon className="h-4 w-4" />
-            <span className="sr-only">Delete</span>
-          </Button>
-        </>
-      ),
-    },
-    {
-      id: "18",
-      username: "camp",
-      email: "camp@gmail.com",
-      action: (
-        <>
-          <Button className="mr-2" size="icon" variant="outline">
-            <DeleteIcon className="h-4 w-4" />
-            <span className="sr-only">Edit</span>
-          </Button>
-          <Button className="text-red-500" size="icon" variant="outline">
-            <TrashIcon className="h-4 w-4" />
-            <span className="sr-only">Delete</span>
-          </Button>
-        </>
-      ),
-    },
-    {
-      id: "18",
-      username: "camp",
-      email: "camp@gmail.com",
-      action: (
-        <>
-          <Button className="mr-2" size="icon" variant="outline">
-            <DeleteIcon className="h-4 w-4" />
-            <span className="sr-only">Edit</span>
-          </Button>
-          <Button className="text-red-500" size="icon" variant="outline">
-            <TrashIcon className="h-4 w-4" />
-            <span className="sr-only">Delete</span>
-          </Button>
-        </>
-      ),
-    },
-    {
-      id: "18",
-      username: "camp",
-      email: "camp@gmail.com",
-      action: (
-        <>
-          <Button className="mr-2" size="icon" variant="outline">
-            <DeleteIcon className="h-4 w-4" />
-            <span className="sr-only">Edit</span>
-          </Button>
-          <Button className="text-red-500" size="icon" variant="outline">
-            <TrashIcon className="h-4 w-4" />
-            <span className="sr-only">Delete</span>
-          </Button>
-        </>
-      ),
-    },
-    {
-      id: "18",
-      username: "camp",
-      email: "camp@gmail.com",
-      action: (
-        <>
-          <Button className="mr-2" size="icon" variant="outline">
-            <DeleteIcon className="h-4 w-4" />
-            <span className="sr-only">Edit</span>
-          </Button>
-          <Button className="text-red-500" size="icon" variant="outline">
-            <TrashIcon className="h-4 w-4" />
-            <span className="sr-only">Delete</span>
-          </Button>
-        </>
-      ),
-    },
-    {
-      id: "18",
-      username: "camp",
-      email: "camp@gmail.com",
-      action: (
-        <>
-          <Button className="mr-2" size="icon" variant="outline">
-            <DeleteIcon className="h-4 w-4" />
-            <span className="sr-only">Edit</span>
-          </Button>
-          <Button className="text-red-500" size="icon" variant="outline">
-            <TrashIcon className="h-4 w-4" />
-            <span className="sr-only">Delete</span>
-          </Button>
-        </>
-      ),
-    },
+  const [users, setUsers] = useState([]);
 
-    // สร้างข้อมูลอื่นๆ ตามต้องการ
-  ];
+  useEffect(() => {
+    const fetchdata = async () => {
+      try {
+        const res = await axios.get("/api/users");
+        setUsers(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchdata();
+  }, []);
+
+  console.log(users);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
 
   const [page, setPage] = useState(1);
   const rowsPerPage = 6;
 
-  const pages = Math.ceil(data.length / rowsPerPage);
+  const pages = Math.ceil(users.length / rowsPerPage);
 
   const items = useMemo(() => {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
 
-    return data.slice(start, end);
-  }, [page, data]);
+    return users.slice(start, end);
+  }, [page, users]);
 
   return (
     <>
@@ -279,21 +69,39 @@ const Users = () => {
             }}
           >
             <TableHeader>
-              <TableColumn>ID</TableColumn>
+              <TableColumn>No</TableColumn>
               <TableColumn>Username</TableColumn>
               <TableColumn>Email</TableColumn>
               <TableColumn>Action</TableColumn>
             </TableHeader>
             <TableBody>
-              {items.map((item, index) => (
-                <TableRow key={index} className=" border">
-                  <TableCell className="font-medium">{item.id}</TableCell>
-                  <TableCell>{item.username}</TableCell>
-                  <TableCell>{item.email}</TableCell>
+              {items &&
+                items.map((item, index) => (
+                  <TableRow key={index} className=" border">
+                    <TableCell className="font-medium">
+                      {index + 1 + (page - 1) * rowsPerPage}
+                    </TableCell>
+                    <TableCell>{item.username}</TableCell>
+                    <TableCell>{item.email}</TableCell>
 
-                  <TableCell>{item.action}</TableCell>
-                </TableRow>
-              ))}
+                    <TableCell>
+                      {" "}
+                      {/* <Button className="mr-2" size="icon" variant="outline">
+                        <DeleteIcon className="h-4 w-4" />
+                        <span className="sr-only">Edit</span>
+                      </Button> */}
+                      <Button
+                        className="text-red-500"
+                        size="icon"
+                        variant="outline"
+                        onClick={(e) => handleDelete(item.id, e)}
+                      >
+                        <TrashIcon className="h-4 w-4" />
+                        <span className="sr-only">Delete</span>
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           </Table>
         </div>

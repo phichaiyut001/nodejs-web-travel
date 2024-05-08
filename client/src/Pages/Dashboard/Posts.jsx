@@ -127,6 +127,7 @@ const Posts = () => {
             }}
           >
             <TableHeader>
+              <TableColumn>No</TableColumn>
               <TableColumn>Image</TableColumn>
               <TableColumn>Title</TableColumn>
 
@@ -136,8 +137,11 @@ const Posts = () => {
             </TableHeader>
             <TableBody>
               {items &&
-                items.map((item) => (
-                  <TableRow key={item.id} className=" border">
+                items.map((item, index) => (
+                  <TableRow key={index} className=" border">
+                    <TableCell className="font-medium">
+                      {index + 1 + (page - 1) * rowsPerPage}
+                    </TableCell>
                     <TableCell>
                       <img
                         onClick={() => {

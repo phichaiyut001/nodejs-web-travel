@@ -1,28 +1,8 @@
 import { db } from "../db.js";
 import jwt from "jsonwebtoken";
 import sharp from "sharp";
-
+import { isAdmin } from "./auth.js";
 // Middleware เพื่อตรวจสอบว่าผู้ใช้เป็น admin หรือไม่
-const isAdmin = (req, res, next) => {
-  const token = req.cookies.access_token;
-
-  if (!token) {
-    return res.status(401).json({ error: "ไม่พบ token" });
-  }
-
-  jwt.verify(token, "jwtkey", (err, decoded) => {
-    if (err) {
-      return res.status(401).json({ error: "Token ไม่ถูกต้อง" });
-    }
-
-    if (!decoded.isAdmin) {
-      return res.status(403).json({ error: "ไม่ได้รับอนุญาต" });
-    }
-
-    // ถ้าผู้ใช้เป็น admin ให้ผ่านไปยัง function ถัดไป
-    next();
-  });
-};
 
 export const getPosts = (req, res) => {
   const q = req.query.cat
@@ -80,31 +60,36 @@ export const deletePost = (req, res) => {
   const token = req.cookies.access_token;
   if (!token) return res.status(401).json("Not authenticated");
 
-  jwt.verify(token, "jwtkey", (err, userInfo) => {
+  jwt.verify(token, "jwtkey", async (err, userInfo) => {
     if (err) return res.status(403).json("Token is not valid");
 
     const postId = req.params.id;
 
-    // ถ้าผู้ใช้เป็น admin ให้ลบโพสต์โดยไม่ต้องตรวจสอบว่าเป็นเจ้าของโพสต์หรือไม่
-    if (isAdmin) {
-      const q = "DELETE FROM posts WHERE `id` = ?";
-      db.query(q, [postId], (err, data) => {
-        if (err) return res.status(500).json("Delete post failed");
+    // เช็คว่าผู้ใช้งานเป็น admin หรือไม่
+    isAdmin(userInfo.id, async (err, isAdmin) => {
+      if (err) return res.status(500).json("Failed to check user role");
 
-        return res.json("Post has been deleted");
-      });
-    } else {
-      const userId = userInfo.id;
-      const q = "DELETE FROM posts WHERE `id` = ? AND `uid` = ?";
-      db.query(q, [postId, userId], (err, data) => {
-        if (err) return res.status(500).json("Delete post failed");
+      if (isAdmin) {
+        // ถ้าผู้ใช้เป็น admin ให้ลบโพสต์โดยไม่ต้องตรวจสอบว่าเป็นเจ้าของโพสต์หรือไม่
+        const q = "DELETE FROM posts WHERE `id` = ?";
+        db.query(q, [postId], (err, data) => {
+          if (err) return res.status(500).json("Delete post failed");
 
-        if (data.affectedRows === 0)
-          return res.status(403).json("You can delete only your post");
+          return res.json("Post has been deleted");
+        });
+      } else {
+        // ถ้าผู้ใช้ไม่ใช่ admin ให้ตรวจสอบว่าเป็นเจ้าของโพสต์หรือไม่
+        const q = "DELETE FROM posts WHERE `id` = ? AND `uid` = ?";
+        db.query(q, [postId, userInfo.id], (err, data) => {
+          if (err) return res.status(500).json("Delete post failed");
 
-        return res.json("Post has been deleted");
-      });
-    }
+          if (data.affectedRows === 0)
+            return res.status(403).json("You can delete only your post");
+
+          return res.json("Post has been deleted");
+        });
+      }
+    });
   });
 };
 
