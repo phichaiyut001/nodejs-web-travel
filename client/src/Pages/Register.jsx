@@ -22,7 +22,14 @@ const Register = () => {
     e.preventDefault();
     try {
       await axios.post("/api/auth/register", inputs);
-      navigate("/login");
+      Swal.fire({
+        icon: "success",
+        title: "Register success",
+        showConfirmButton: false,
+        timer: 600,
+      }).then(() => {
+        navigate("/login");
+      });
     } catch (err) {
       setError(err.response.data);
       Swal.fire({

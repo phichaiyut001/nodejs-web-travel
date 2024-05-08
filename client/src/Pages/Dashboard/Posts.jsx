@@ -133,6 +133,7 @@ const Posts = () => {
 
               <TableColumn>Category</TableColumn>
               <TableColumn>Status</TableColumn>
+              <TableColumn>Date</TableColumn>
               <TableColumn>Action</TableColumn>
             </TableHeader>
             <TableBody>
@@ -172,11 +173,16 @@ const Posts = () => {
                       </Badge>
                     </TableCell>
                     <TableCell>
+                      <Badge variant="success">
+                        {moment(item.date).format("D/M/YYYY")}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
                       {" "}
-                      <Button className="mr-2" size="icon" variant="outline">
+                      {/* <Button className="mr-2" size="icon" variant="outline">
                         <DeleteIcon className="h-4 w-4" />
                         <span className="sr-only">Edit</span>
-                      </Button>
+                      </Button> */}
                       <Button
                         className="text-red-500"
                         size="icon"
