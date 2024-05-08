@@ -18,9 +18,11 @@ import { AuthContext } from "../../context/authContext";
 import Swal from "sweetalert2";
 
 const Posts = () => {
+  // eslint-disable-next-line no-unused-vars
   const { currentUser } = useContext(AuthContext);
   const [posts, setPosts] = useState([]);
   const [post, setPost] = useState({});
+  // eslint-disable-next-line no-unused-vars
   const navigate = useNavigate();
   const { id } = useParams();
   const { setVisible, bindings } = useModal();
@@ -232,6 +234,7 @@ const Posts = () => {
   );
 };
 
+// eslint-disable-next-line no-unused-vars
 function DeleteIcon(props) {
   return (
     <svg

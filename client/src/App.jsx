@@ -5,6 +5,7 @@ import Login from "./Pages/Login";
 import Home from "./Pages/Home";
 import Write from "./Pages/Write";
 import Single from "./Pages/Single";
+// eslint-disable-next-line no-unused-vars
 import Navbar from "./components/Navbar";
 import Navbar2 from "./components/Navbar2";
 import Footer from "./components/Footer";
