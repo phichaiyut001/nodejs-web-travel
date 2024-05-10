@@ -1,5 +1,8 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
+// eslint-disable-next-line no-unused-vars
 import { Link } from "react-router-dom";
+// eslint-disable-next-line no-unused-vars
 import { ButtonDropdown, Button, Card, Text, Tag } from "@geist-ui/core";
 
 import { ResponsiveBar } from "@nivo/bar";
@@ -327,6 +330,7 @@ const Dashboard = () => {
     </>
   );
 };
+// eslint-disable-next-line no-unused-vars
 function CalendarClockIcon(props) {
   return (
     <svg
@@ -351,6 +355,7 @@ function CalendarClockIcon(props) {
   );
 }
 
+// eslint-disable-next-line no-unused-vars
 function DownloadIcon(props) {
   return (
     <svg
