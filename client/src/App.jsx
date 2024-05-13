@@ -79,6 +79,10 @@ const router = createBrowserRouter([
         path: "/write",
         element: <ProtectedRouteUser element={<Write />} />,
       },
+      {
+        path: "/quill",
+        element: <ProtectedRouteUser element={<Editor />} />,
+      },
     ],
   },
   {
@@ -89,10 +93,7 @@ const router = createBrowserRouter([
     path: "/login",
     element: <Login />,
   },
-  {
-    path: "/quill",
-    element: <Editor />,
-  },
+
   {
     path: "/",
     element: <LayoutAdmin />,

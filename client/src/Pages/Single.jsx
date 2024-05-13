@@ -77,7 +77,7 @@ const Single = () => {
               </div>
               {currentUser && currentUser.username === post.username && (
                 <div className="ml-auto flex space-x-2">
-                  <Link to={`/write?edit=2`} state={post}>
+                  <Link to={`/quill?id=${post.id}`} state={post}>
                     <PencilSquareIcon className="h-6 w-6 text-blue-500" />
                   </Link>
                   <TrashIcon

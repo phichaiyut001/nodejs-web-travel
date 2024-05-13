@@ -84,6 +84,7 @@ const Home = () => {
         )}
         <section>
           <h2 className="mb-6 text-2xl font-bold">Recent Posts</h2>
+
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {posts &&
               posts.map((post) => (

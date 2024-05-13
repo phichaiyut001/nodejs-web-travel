@@ -1,26 +1,15 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import EditorJS from "@editorjs/editorjs";
 import Header from "@editorjs/header";
 import ImageTool from "@editorjs/image";
 import axios from "axios";
 import Swal from "sweetalert2";
+import Embed from "@editorjs/embed"; // เพิ่ม import ของ Embed
 
 import "./Editor.css";
 
-const DEFAULT_INITIAL_DATA = {
-  time: new Date().getTime(),
-  blocks: [
-    {
-      type: "header",
-      data: {
-        text: "This is my awesome editor!",
-        level: 1,
-      },
-    },
-  ],
-};
-
-const EditorComponent = () => {
+const EditorComponent = ({ value, onChange }) => {
+  const [data, setData] = useState(value);
   const ejInstance = useRef();
 
   const uploadImage = async (file) => {
@@ -46,16 +35,16 @@ const EditorComponent = () => {
 
   const initEditor = () => {
     const editor = new EditorJS({
+      placeholder: "Let`s write an awesome story!",
       holder: "editorjs",
       onReady: () => {
         ejInstance.current = editor;
       },
       autofocus: true,
-      data: DEFAULT_INITIAL_DATA,
+      data: data, // เปลี่ยนเป็น value ที่รับเข้ามา
       onChange: async () => {
         let content = await editor.saver.save();
-
-        console.log(content);
+        onChange(content);
       },
       tools: {
         header: Header,
@@ -69,6 +58,7 @@ const EditorComponent = () => {
             },
           },
         },
+        embed: Embed, // เพิ่ม Embed tool
       },
     });
   };
@@ -83,11 +73,11 @@ const EditorComponent = () => {
       ejInstance?.current?.destroy();
       ejInstance.current = null;
     };
-  }, []);
+  }, [data]); // เพิ่ม value เข้าไปใน dependency array เพื่อให้มันรีเรนเดอร์เมื่อ value เปลี่ยน
 
   return (
     <>
-      <div id="editorjs"></div>
+      <div id="editorjs"> </div>
     </>
   );
 };

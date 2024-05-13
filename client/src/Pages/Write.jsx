@@ -1,14 +1,13 @@
-import { useState, useMemo } from "react";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import moment from "moment";
 import Swal from "sweetalert2";
+import EditorComponent from "../components/Editor.jsx";
 
 const Write = () => {
   const { state } = useLocation();
-  const [value, setValue] = useState(state?.description || "");
+  const [editorValue, setEditorValue] = useState(state?.description || null);
   const [title, setTitle] = useState(state?.title || "");
   const [file, setFile] = useState(null);
   const [cat, setCat] = useState(state?.cat || "");
@@ -20,32 +19,6 @@ const Write = () => {
     if (selectedFile && selectedFile.type.includes("image")) {
       setFile(selectedFile);
       setPreviewURL(URL.createObjectURL(selectedFile));
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "Invalid file type",
-        text: "Please select an image file.",
-      });
-    }
-  };
-
-  const urlToBase64 = async (url) => {
-    const response = await fetch(url);
-    const blob = await response.blob();
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result);
-      reader.onerror = reject;
-      reader.readAsDataURL(blob);
-    });
-  };
-
-  const handleAddImgToBlog = async (e) => {
-    const selectedImg = e.target.files[0];
-    if (selectedImg && selectedImg.type.includes("image")) {
-      const imgURL = await urlToBase64(URL.createObjectURL(selectedImg));
-      const imgTag = `<img src="${imgURL}" alt="Uploaded Image" />`;
-      setValue(value + imgTag);
     } else {
       Swal.fire({
         icon: "error",
@@ -78,7 +51,7 @@ const Write = () => {
     try {
       const postData = {
         title,
-        description: value,
+        description: convertJsonToHtml(editorValue),
         cat,
         img: imgUrl || "",
         date: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
@@ -98,7 +71,7 @@ const Write = () => {
       });
 
       // Clear input fields after successful submission
-      setValue("");
+      setEditorValue("");
       setTitle("");
       setFile(null);
       setCat("");
@@ -115,27 +88,37 @@ const Write = () => {
     }
   };
 
-  const modules = useMemo(
-    () => ({
-      toolbar: {
-        container: [
-          [{ header: [1, 2, 3, 4, 5, 6, false] }],
-          ["bold", "italic", "underline", "strike"],
-          [{ list: "ordered" }, { list: "bullet" }],
-          [{ align: [] }],
-          [{ color: [] }, { background: [] }],
-          ["clean"],
-          ["image"],
-        ],
-        handlers: {
-          image: function () {
-            document.getElementById("getFile").click();
-          },
-        },
-      },
-    }),
-    []
-  );
+  const convertJsonToHtml = (value) => {
+    let html = "";
+
+    value.blocks.forEach((block) => {
+      switch (block.type) {
+        case "header":
+          html += `<h${block.data.level}>${block.data.text}</h${block.data.level}>`;
+          break;
+        case "paragraph":
+          html += `<p>${block.data.text}</p>`;
+          break;
+        case "image":
+          html += `<img src="${`http://localhost:5173/${block.data.file.url}`}" alt="${
+            block.data.caption
+          }" />`;
+          break;
+        // สามารถเพิ่ม case สำหรับ type อื่น ๆ ได้ตามต้องการ
+        default:
+          break;
+      }
+    });
+
+    return html;
+  };
+
+  console.log(editorValue);
+  const getText = (html) => {
+    const doc = new DOMParser().parseFromString(html, "text/html");
+
+    return doc.body.textContent;
+  };
 
   return (
     <div className="container mx-auto px-4 lg:px-20 flex justify-center items-center">
@@ -149,13 +132,12 @@ const Write = () => {
             className="mb-3 border block w-full rounded-md border-gray-300 bg-gray-50 p-2 text-sm text-gray-900 shadow-sm focus:border-gray-500 focus:ring-gray-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
           />
           <div className="rounded-md border border-gray-300 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800">
-            <ReactQuill
-              className="editor h-auto mb-10"
-              theme="snow"
-              value={value}
-              onChange={setValue}
-              modules={modules}
-            />
+            <EditorComponent value={editorValue} onChange={setEditorValue} />
+            {/* <input
+              type="text"
+              value={getText(editorValue)}
+              onChange={setEditorValue}
+            /> */}
           </div>
         </div>
         <div className="w-full lg:w-1/3 pl-6">
@@ -188,20 +170,6 @@ const Write = () => {
               />
             )}
             <div className="mt-4 flex">
-              <input
-                style={{ display: "none" }}
-                type="file"
-                name=""
-                id="getFile"
-                onChange={handleAddImgToBlog}
-              />
-              <label
-                htmlFor="getFile"
-                className="mr-4 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
-              >
-                Add Img to Blog
-              </label>
-
               <button
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                 onClick={handleClick}
