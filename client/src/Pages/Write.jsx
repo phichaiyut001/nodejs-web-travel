@@ -88,7 +88,7 @@ const Write = () => {
     }
   };
 
-  const convertJsonToHtml = (value) => {
+  const convertJsonToHtml = (value, withBackground, withBorder) => {
     let html = "";
 
     value.blocks.forEach((block) => {
@@ -97,12 +97,26 @@ const Write = () => {
           html += `<h${block.data.level}>${block.data.text}</h${block.data.level}>`;
           break;
         case "paragraph":
-          html += `<p>${block.data.text}</p>`;
+          html += `<p style="white-space: pre-wrap;">${block.data.text}</p>`;
           break;
         case "image":
-          html += `<img src="${`http://localhost:5173/${block.data.file.url}`}" alt="${
+          // eslint-disable-next-line no-case-declarations
+          let imgHtml = `<img src="${`http://localhost:5173/${block.data.file.url}`}" alt="${
             block.data.caption
-          }" />`;
+          }"`;
+
+          if (withBackground) {
+            imgHtml += ` style="background-color: #f2f2f2;"`;
+          }
+          if (withBorder) {
+            imgHtml += ` style="border: 1px solid #ccc;"`;
+          }
+          if (block.data.stretched) {
+            imgHtml += ` style="width: 100%; height: auto;"`;
+          }
+
+          imgHtml += ` />`;
+          html += imgHtml;
           break;
         // สามารถเพิ่ม case สำหรับ type อื่น ๆ ได้ตามต้องการ
         default:
@@ -133,11 +147,6 @@ const Write = () => {
           />
           <div className="rounded-md border border-gray-300 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800">
             <EditorComponent value={editorValue} onChange={setEditorValue} />
-            {/* <input
-              type="text"
-              value={getText(editorValue)}
-              onChange={setEditorValue}
-            /> */}
           </div>
         </div>
         <div className="w-full lg:w-1/3 pl-6">

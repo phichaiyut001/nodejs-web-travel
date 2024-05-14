@@ -88,10 +88,10 @@ const Single = () => {
               )}
             </div>
             <h1 className="text-5xl font-bold mt-2 mb-3">{post.title}</h1>
-            <p
+            <div
               className="desc mt-3 md:mt-0 md:col-start-1 md:col-end-3 text-left md:text-left whitespace-pre-line pl-0 md:pl-0"
               dangerouslySetInnerHTML={{ __html: post.description }}
-            ></p>
+            ></div>
           </div>
         </div>
         <div className="hidden md:block md:col-start-2 md:col-end-3 flex justify-end">
