@@ -7,9 +7,9 @@ export default defineConfig({
 
   server: {
     proxy: {
-      "/api/": {
+      "/api": {
         target: "https://nodejs-web-travel.onrender.com/api",
-        changeOrigin: true,
+        changeOrigin: false,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
     },
