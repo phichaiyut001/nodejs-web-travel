@@ -10,7 +10,12 @@ import cors from "cors";
 const app = express();
 dotenv.config();
 
-app.use(cors());
+const corsOptions = {
+  origin: "https://nodejs-web-travel-2.onrender.com",
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
