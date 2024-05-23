@@ -9,7 +9,7 @@ export default defineConfig({
     proxy: {
       "/api": {
         target: "https://nodejs-web-travel.onrender.com/api",
-        changeOrigin: false,
+        changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
     },
