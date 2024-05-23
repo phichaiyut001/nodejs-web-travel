@@ -19,7 +19,9 @@ const Home = () => {
   useEffect(() => {
     const fetchdata = async () => {
       try {
-        const res = await axios.get(`api/posts${cat}`);
+        const res = await axios.get(
+          `https://nodejs-web-travel.onrender.com/api/posts${cat}`
+        );
         setPosts(res.data);
         const randomIndex = Math.floor(Math.random() * res.data.length);
         setRandomPost(res.data[randomIndex]);
