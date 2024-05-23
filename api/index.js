@@ -4,8 +4,13 @@ import userRoutes from "./routes/user.js";
 import postsRoutes from "./routes/posts.js";
 import cookieParser from "cookie-parser";
 import multer from "multer";
-const app = express();
+import dotenv from "dotenv";
+import cors from "cors";
 
+const app = express();
+dotenv.config();
+
+app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
@@ -30,5 +35,5 @@ app.use("/api/users", userRoutes);
 app.use("/api/posts", postsRoutes);
 
 app.listen(8800, () => {
-  console.log("Connect");
+  console.log("api is runnung on port 8800");
 });

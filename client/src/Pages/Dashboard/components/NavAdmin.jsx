@@ -68,13 +68,13 @@ const Navadmin = ({ children }) => {
               <UsersIcon className="h-5 w-5" />
               Users
             </Link>
-            <Link
+            {/* <Link
               className="flex items-center gap-3 rounded-md py-2 px-3 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-950 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:ring-gray-300"
               to="#"
             >
               <LineChartIcon className="h-5 w-5" />
               Analytics
-            </Link>
+            </Link> */}
             <Link
               className="flex items-center gap-3 rounded-md py-2 px-3 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-950 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:ring-gray-300"
               onClick={logout}
