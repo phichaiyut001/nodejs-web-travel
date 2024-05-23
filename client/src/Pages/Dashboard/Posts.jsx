@@ -31,7 +31,9 @@ const Posts = () => {
   useEffect(() => {
     const fetchdata = async () => {
       try {
-        const res = await axios.get(`/api/posts/${cat}`);
+        const res = await axios.get(
+          `https://nodejs-web-travel.onrender.com/api/posts/${cat}`
+        );
         setPosts(res.data);
       } catch (err) {
         console.log(err);
@@ -43,7 +45,9 @@ const Posts = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(`/api/posts/${id}`);
+        const res = await axios.get(
+          `https://nodejs-web-travel.onrender.com/api/posts/${id}`
+        );
         setPost(res.data);
       } catch (err) {
         console.log(err);
@@ -92,7 +96,9 @@ const Posts = () => {
       });
 
       if (result.isConfirmed) {
-        await axios.delete(`/api/posts/${postId}`);
+        await axios.delete(
+          `https://nodejs-web-travel.onrender.com/api/posts/${postId}`
+        );
         const updatedPosts = posts.filter((item) => item.id !== postId);
         setPosts(updatedPosts);
         Swal.fire("Deleted!", "Your post has been deleted.", "success");

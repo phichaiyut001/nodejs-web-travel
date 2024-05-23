@@ -12,7 +12,10 @@ export const AuthContextProvider = ({ children }) => {
 
   const login = async (inputs) => {
     try {
-      const res = await axios.post("/api/auth/login", inputs);
+      const res = await axios.post(
+        "https://nodejs-web-travel.onrender.com/api/auth/login",
+        inputs
+      );
 
       setCurrentUser(res.data);
     } catch (error) {

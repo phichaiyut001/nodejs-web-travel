@@ -23,7 +23,9 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchdata = async () => {
       try {
-        const res = await axios.get("/api/users");
+        const res = await axios.get(
+          "https://nodejs-web-travel.onrender.com/api/users"
+        );
         const filterUsers = res.data.filter((user) => !user.isAdmin);
         setgetUsers(filterUsers);
       } catch (err) {
@@ -37,7 +39,9 @@ const Dashboard = () => {
   useEffect(() => {
     const Fetchdata = async () => {
       try {
-        const res = await axios.get("/api/posts");
+        const res = await axios.get(
+          "https://nodejs-web-travel.onrender.com/api/posts"
+        );
         setgetPosts(res.data);
       } catch (err) {
         console.log(err);
