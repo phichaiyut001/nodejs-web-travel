@@ -48,7 +48,7 @@ export const login = (req, res) => {
     if (data.length === 0)
       return res.status(404).json({ error: "User not found!" });
 
-    //check passwrod
+    //check password
     const isPasswordCorrect = bcrypt.compareSync(
       req.body.password,
       data[0].password
@@ -57,8 +57,18 @@ export const login = (req, res) => {
     if (!isPasswordCorrect)
       return res.status(400).json({ error: "Username หรือ Password ผิด!" });
 
+    // หลังจากตรวจสอบและยืนยันตัวตนผู้ใช้เรียบร้อยแล้ว
+    // เราจะ sign token โดยใช้ JWT เป็น secret key
+
+    const tokenPayload = { id: data[0].id };
+
+    // ในที่นี้เราใช้ JWT เป็น secret key
+    const secretKey = "jwtkey";
+
+    const token = jwt.sign(tokenPayload, secretKey);
+
+    // ต่อไปจะเป็นการส่ง token ให้กับผู้ใช้และ set cookie
     if (data[0].isAdmin === 1) {
-      const token = jwt.sign({ id: data[0].id }, "jwtkey");
       const { password, ...other } = data[0];
 
       res
@@ -68,7 +78,6 @@ export const login = (req, res) => {
         .status(200)
         .json({ ...other, isAdmin: true });
     } else {
-      const token = jwt.sign({ id: data[0].id }, "jwtkey");
       const { password, isAdmin, ...other } = data[0];
 
       res
