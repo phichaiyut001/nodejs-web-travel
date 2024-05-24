@@ -11,7 +11,7 @@ const getText = (html) => {
 };
 
 const Home = () => {
-  const [posts, setPosts] = useState(null);
+  const [posts, setPosts] = useState([]);
   const [randomPost, setRandomPost] = useState(null);
 
   const cat = useLocation().search;
@@ -88,7 +88,7 @@ const Home = () => {
           <h2 className="mb-6 text-2xl font-bold">Recent Posts</h2>
 
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {posts !== null &&
+            {posts &&
               posts.map((post) => (
                 <card key={post.id}>
                   <Link to={`post/${post.id}`}>
