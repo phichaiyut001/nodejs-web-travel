@@ -58,7 +58,7 @@ export const login = (req, res) => {
       return res.status(400).json({ error: "Username หรือ Password ผิด!" });
 
     // Generate token
-    const token = jwt.sign({ id: data[0].id }, "jwtkey");
+    let token = jwt.sign({ id: data[0].id }, "jwtkey");
 
     // Set response based on user role
     const { password, isAdmin, ...other } = data[0];
