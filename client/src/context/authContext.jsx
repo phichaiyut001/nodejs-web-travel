@@ -36,7 +36,9 @@ export const AuthContextProvider = ({ children }) => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await axios.post("/api/auth/logout");
+          await axios.post(
+            "https://nodejs-web-travel.onrender.com/api/auth/logout"
+          );
           setCurrentUser(null);
           localStorage.removeItem("user"); // ลบข้อมูลผู้ใช้ที่อยู่ใน localStorage
         } catch (error) {
