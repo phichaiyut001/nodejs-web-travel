@@ -8,7 +8,7 @@ export const getUser = (req, res) => {
   if (!token) return res.status(401).json({ error: "Not authenticated" });
 
   jwt.verify(token, "jwtkey", async (err, userInfo) => {
-    if (err) return res.status(403).json("Token is not valid");
+    if (err) return res.status(403).json({ error: "Token is not valid" });
 
     // เช็คว่าผู้ใช้งานเป็น admin หรือไม่
     isAdmin(userInfo.id, async (err, isAdmin) => {
