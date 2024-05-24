@@ -39,6 +39,10 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postsRoutes);
 
+app.get("/", (req, res) => {
+  res.send(req.cookies.access_token);
+});
+
 app.listen(8800, () => {
   console.log("api is runnung on port 8800");
 });
