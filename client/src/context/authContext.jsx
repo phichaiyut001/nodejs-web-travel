@@ -15,7 +15,12 @@ export const AuthContextProvider = ({ children }) => {
       const res = await axios.post(
         "https://nodejs-web-travel.onrender.com/api/auth/login",
         inputs,
-        { withCredentials: true }
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        }
       );
 
       setCurrentUser(res.data);
