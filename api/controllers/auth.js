@@ -64,8 +64,7 @@ export const login = (req, res) => {
       res
         .cookie("access_token", token, {
           httpOnly: true,
-          sameSite: "Lax",
-          secure: true,
+          sameSite: "none",
         })
         .status(200)
         .json({ ...other, isAdmin: true });
@@ -77,8 +76,7 @@ export const login = (req, res) => {
       res
         .cookie("access_token", token, {
           httpOnly: true,
-          sameSite: "Lax",
-          secure: true,
+          sameSite: "none",
         })
         .status(200)
         .json(other);
