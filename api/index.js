@@ -11,7 +11,7 @@ const app = express();
 dotenv.config();
 
 const corsOptions = {
-  origin: "https://nodejs-web-travel-2.onrender.com",
+  origin: "https://nodejs-web-travel-66.onrender.com",
   credentials: true,
 };
 
