@@ -24,8 +24,7 @@ const Dashboard = () => {
     const fetchdata = async () => {
       try {
         const res = await axios.get(
-          "https://nodejs-web-travel.onrender.com/api/users",
-          { credentials: "include" }
+          "https://nodejs-web-travel.onrender.com/api/users"
         );
         const filterUsers = res.data.filter((user) => !user.isAdmin);
         setgetUsers(filterUsers);
