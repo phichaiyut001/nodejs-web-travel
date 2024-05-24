@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { isAdmin } from "./auth.js";
 
 export const getUser = (req, res) => {
-  const token = req.cookies.access_token;
+  const token = req.cookies;
   console.log(token);
   if (!token) return res.status(401).json({ error: "Not authenticated" });
 

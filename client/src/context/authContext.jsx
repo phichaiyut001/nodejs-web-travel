@@ -16,9 +16,6 @@ export const AuthContextProvider = ({ children }) => {
         "https://nodejs-web-travel.onrender.com/api/auth/login",
         inputs,
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
           withCredentials: true,
         }
       );
