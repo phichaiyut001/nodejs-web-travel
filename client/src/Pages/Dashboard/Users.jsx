@@ -57,7 +57,9 @@ const Users = () => {
       });
 
       if (result.isConfirmed) {
-        await axios.delete(`/api/users/${userId}`); // เปลี่ยนเส้นทางเป็น `/api/users/${userId}`
+        await axios.delete(
+          `https://nodejs-web-travel.onrender.com/api/users/${userId}`
+        ); // เปลี่ยนเส้นทางเป็น `/api/users/${userId}`
         const updatedUsers = users.filter((user) => user.id !== userId);
         setUsers(updatedUsers);
         Swal.fire("Deleted!", "ผู้ใช้ถูกลบแล้ว", "success");

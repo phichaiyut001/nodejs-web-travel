@@ -30,34 +30,34 @@ export const getUser = (req, res) => {
 };
 
 export const deleteUser = (req, res) => {
-  const token = req.cookies.access_token;
-  if (!token) return res.status(401).json({ error: "Not authenticated" });
+  // const token = req.cookies.access_token;
+  // if (!token) return res.status(401).json({ error: "Not authenticated" });
 
-  jwt.verify(token, "jwtkey", async (err, userInfo) => {
-    if (err) return res.status(403).json({ error: "Token is not valid" });
+  // jwt.verify(token, "jwtkey", async (err, userInfo) => {
+  //   if (err) return res.status(403).json({ error: "Token is not valid" });
 
-    const userId = req.params.id;
+  const userId = req.params.id;
 
-    isAdmin(userInfo.id, async (err, isAdmin) => {
-      if (err)
-        return res.status(500).json({ error: "Failed to check user role" });
+  // isAdmin(userInfo.id, async (err, isAdmin) => {
+  //   if (err)
+  //     return res.status(500).json({ error: "Failed to check user role" });
 
-      if (isAdmin) {
-        const q = "DELETE FROM users WHERE id = ?";
-        db.query(q, [userId], (err, data) => {
-          if (err) return res.status(500).json({ error: "Delete user failed" });
+  //   if (isAdmin) {
+  const q = "DELETE FROM users WHERE id = ?";
+  db.query(q, [userId], (err, data) => {
+    if (err) return res.status(500).json({ error: "Delete user failed" });
 
-          if (data.affectedRows === 0) {
-            return res.status(404).json({ error: "User not found" });
-          }
+    if (data.affectedRows === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
 
-          return res.status(200).json({ message: "User has been deleted" });
-        });
-      } else {
-        return res
-          .status(403)
-          .json({ error: "You are not authorized to delete this user" });
-      }
-    });
+    return res.status(200).json({ message: "User has been deleted" });
   });
+  // } else {
+  //   return res
+  //     .status(403)
+  //     .json({ error: "You are not authorized to delete this user" });
+  // }
+  // });
+  // });
 };

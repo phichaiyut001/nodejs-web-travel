@@ -60,7 +60,10 @@ const Editors = () => {
     try {
       const formData = new FormData();
       formData.append("file", file);
-      const res = await axios.post("/api/upload", formData);
+      const res = await axios.post(
+        "https://nodejs-web-travel-66.onrender.com/users/api/upload",
+        formData
+      );
       return res.data;
     } catch (err) {
       console.log(err);
@@ -86,9 +89,15 @@ const Editors = () => {
       };
 
       if (state) {
-        await axios.put(`/api/posts/${state.id}`, postData);
+        await axios.put(
+          `https://nodejs-web-travel-66.onrender.com/users/api/posts/${state.id}`,
+          postData
+        );
       } else {
-        await axios.post(`/api/posts/`, postData);
+        await axios.post(
+          `https://nodejs-web-travel-66.onrender.com/users/api/posts/`,
+          postData
+        );
       }
 
       await Swal.fire({

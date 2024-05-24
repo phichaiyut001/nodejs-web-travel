@@ -32,7 +32,10 @@ const Write = () => {
     try {
       const formData = new FormData();
       formData.append("file", file);
-      const res = await axios.post("/api/upload", formData);
+      const res = await axios.post(
+        "https://nodejs-web-travel.onrender.com/api/upload",
+        formData
+      );
       return res.data;
     } catch (err) {
       console.log(err);
@@ -58,9 +61,15 @@ const Write = () => {
       };
 
       if (state) {
-        await axios.put(`/api/posts/${state.id}`, postData);
+        await axios.put(
+          `https://nodejs-web-travel.onrender.com/api/posts/${state.id}`,
+          postData
+        );
       } else {
-        await axios.post(`/api/posts/`, postData);
+        await axios.post(
+          `https://nodejs-web-travel.onrender.com/api/posts/`,
+          postData
+        );
       }
 
       await Swal.fire({
@@ -101,7 +110,7 @@ const Write = () => {
           break;
         case "image":
           // eslint-disable-next-line no-case-declarations
-          let imgHtml = `<img src="${`http://localhost:5173/${block.data.file.url}`}" alt="${
+          let imgHtml = `<img src="${`https://nodejs-web-travel-66.onrender.com/${block.data.file.url}`}" alt="${
             block.data.caption
           }"`;
 

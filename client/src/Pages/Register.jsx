@@ -21,7 +21,10 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("/api/auth/register", inputs);
+      await axios.post(
+        "https://nodejs-web-travel.onrender.com/api/auth/register",
+        inputs
+      );
       Swal.fire({
         icon: "success",
         title: "Register success",

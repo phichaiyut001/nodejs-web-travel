@@ -16,7 +16,9 @@ const Single = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(`/api/posts/${id}`);
+        const res = await axios.get(
+          `https://nodejs-web-travel.onrender.com/api/posts/${id}`
+        );
         setPost(res.data);
       } catch (err) {
         console.log(err);
@@ -38,7 +40,9 @@ const Single = () => {
       });
 
       if (result.isConfirmed) {
-        await axios.delete(`/api/posts/${id}`);
+        await axios.delete(
+          `https://nodejs-web-travel.onrender.com/api/posts/${id}`
+        );
         navigate("/");
         Swal.fire("Deleted!", "Your post has been deleted.", "success");
       }
