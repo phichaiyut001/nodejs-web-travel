@@ -1,6 +1,9 @@
 import { db } from "../db.js";
 import jwt from "jsonwebtoken";
 import { isAdmin } from "./auth.js";
+import cookieParser from "cookie-parser";
+
+app.use(cookieParser());
 
 export const getUser = (req, res) => {
   const token = req.cookies.access_token;
