@@ -65,7 +65,8 @@ export const login = (req, res) => {
     const { password, ...userData } = data[0];
     res.cookie("access_token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Use secure cookies in production
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "none", // Use secure cookies in production
     });
 
     console.log("User logged in, token:", token);
