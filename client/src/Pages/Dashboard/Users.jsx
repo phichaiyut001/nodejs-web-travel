@@ -18,7 +18,9 @@ const Users = () => {
   useEffect(() => {
     const fetchdata = async () => {
       try {
-        const res = await axios.get("/api/users");
+        const res = await axios.get(
+          "https://nodejs-web-travel.onrender.com/api/users"
+        );
         const filteredUsers = res.data.filter((user) => !user.isAdmin);
         setUsers(filteredUsers);
       } catch (err) {
