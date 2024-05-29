@@ -68,7 +68,7 @@ export const login = (req, res) => {
       .cookie("access_token", token, {
         httpOnly: true,
         secure: true,
-        domain: "https://main--travel66.netlify.app",
+        domain: "main--travel66.netlify.app",
         path: "/",
       })
       .status(200)
