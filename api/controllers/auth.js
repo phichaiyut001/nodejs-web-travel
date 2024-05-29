@@ -58,7 +58,7 @@ export const login = (req, res) => {
       return res.status(400).json({ error: "Username หรือ Password ผิด!" });
 
     // Generate token
-    let token = jwt.sign({ id: data[0].id }, "jwtkey");
+    const token = jwt.sign({ id: data[0].id }, "jwtkey");
 
     // Set response based on user role
     const { password, isAdmin, ...other } = data[0];
@@ -68,7 +68,7 @@ export const login = (req, res) => {
       .cookie("access_token", token, {
         httpOnly: true,
         secure: true,
-        sameSite: "none",
+        maxAge: 3600000,
       })
       .status(200)
       .json(responseData);
@@ -77,7 +77,7 @@ export const login = (req, res) => {
 export const logout = (req, res) => {
   res
     .clearCookie("access_token", {
-      sameSite: "none",
+      sameSite: "lax",
       secure: true,
     })
     .status(200)
