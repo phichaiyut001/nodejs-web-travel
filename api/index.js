@@ -17,7 +17,6 @@ dotenv.config();
 const corsOptions = {
   // origin: "https://nodejs-web-travel-66.onrender.com",
   origin: "https://main--travel66.netlify.app",
-  origin: "http://localhost:5173",
   credentials: true,
 };
 
