@@ -5,6 +5,8 @@ import { isAdmin } from "./auth.js";
 export const getUser = (req, res) => {
   const token = req.cookies.access_token;
 
+  if (!token) return res.status(401).json({ error: "Not authenticated" });
+
   jwt.verify(token, "jwtkey", async (err, userInfo) => {
     if (err) return res.status(403).json({ error: "Token is not valid" });
 
